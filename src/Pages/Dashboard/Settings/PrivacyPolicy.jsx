@@ -1,12 +1,19 @@
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import JoditEditor from "jodit-react";
-import Swal from "sweetalert2";
+import {
+  useAddPrivacyPolicyMutation,
+  useGetPrivacyPolicyQuery,
+  useUpdatePrivacyPolicyMutation,
+} from "../../../redux/api/privacyPolicyApi";
+import { toast } from "sonner";
 
 const PrivacyPolicy = () => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
   const [isLoading, seLoading] = useState(false);
-
+  const [addPrivacyPolicy] = useAddPrivacyPolicyMutation();
+  const [updatePrivacy] = useUpdatePrivacyPolicyMutation();
+  const { data: privacyData } = useGetPrivacyPolicyQuery({});
   const config = {
     readonly: false,
     placeholder: "Start typings...",
@@ -14,6 +21,39 @@ const PrivacyPolicy = () => {
       height: 400,
       background: "#FBF5EB",
     },
+  };
+
+  //add faq section
+  const handleSubmit = async () => {
+    const privacyData = {
+      content,
+    };
+
+    try {
+      const res = await addPrivacyPolicy(privacyData).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!!!");
+    }
+  };
+  const handleUpdatePrivacy = async (id) => {
+    const privacyData = {
+      data: {
+        content,
+      },
+      id,
+    };
+
+    try {
+      const res = await updatePrivacy(privacyData).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!!!");
+    }
   };
   return (
     <div className=" bg-white px-4 py-2 rounded-lg pb-10 ">
@@ -42,7 +82,7 @@ const PrivacyPolicy = () => {
       <div>
         <JoditEditor
           ref={editor}
-          value={content}
+          value={privacyData?.data[0]?.content}
           config={config}
           tabIndex={1}
           onBlur={(newContent) => setContent(newContent)}
@@ -57,19 +97,37 @@ const PrivacyPolicy = () => {
           alignItems: "center",
         }}
       >
-        <button
-          style={{
-            height: 44,
-            width: 150,
-            backgroundColor: "#DBB162",
-            color: "white",
-            borderRadius: "8px",
-            fontWeight: 500,
-            fontSize: 14,
-          }}
-        >
-          Save Changes
-        </button>
+        {privacyData?.data[0] ? (
+          <button
+            onClick={() => handleUpdatePrivacy(privacyData?.data[0]?._id)}
+            style={{
+              height: 44,
+              width: 150,
+              backgroundColor: "#DBB162",
+              color: "white",
+              borderRadius: "8px",
+              fontWeight: 500,
+              fontSize: 14,
+            }}
+          >
+            Update Changes
+          </button>
+        ) : (
+          <button
+            onClick={handleSubmit}
+            style={{
+              height: 44,
+              width: 150,
+              backgroundColor: "#DBB162",
+              color: "white",
+              borderRadius: "8px",
+              fontWeight: 500,
+              fontSize: 14,
+            }}
+          >
+            Save Changes
+          </button>
+        )}
       </div>
     </div>
   );

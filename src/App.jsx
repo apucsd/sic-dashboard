@@ -27,59 +27,67 @@ import BookList from "./Pages/Dashboard/BookList";
 import SICguidelines from "./Pages/Dashboard/Settings/SICguidelines";
 import Feedback from "./Pages/Dashboard/Feedback";
 import UploadDonation from "./Pages/Dashboard/UploadDonation";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import { Toaster } from "sonner";
 
 function App() {
   return (
     <>
       <div className="maincontainer">
-        <Router>
-          <Routes>
-            <Route
-              exact
-              path="/"
-              element={
-                <PrivateRoute>
-                  <Dashboard />
-                </PrivateRoute>
-              }
-            >
-              <Route path="/" element={<DashboardHome />} />
-              <Route path="/user-list" element={<UserDetailsList />} />
-              <Route path="/donors-record" element={<DonorsRecord />} />
-
+        <Provider store={store}>
+          <Router>
+            <Routes>
               <Route
-                path="/books-category-list"
-                element={<BooksCategoryList />}
-              />
-              <Route path="/books-list" element={<BookList />} />
+                exact
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <Dashboard />
+                  </PrivateRoute>
+                }
+              >
+                <Route path="/" element={<DashboardHome />} />
+                <Route path="/user-list" element={<UserDetailsList />} />
+                <Route path="/donors-record" element={<DonorsRecord />} />
 
-              <Route path="/notification" element={<Notification />} />
-              <Route path="/setting" element={<FAQ />} />
-              <Route path="/sic" element={<SICguidelines />} />
-              <Route path="/make-admin" element={<MakeAdmin />} />
-              <Route path="/admin-profile" element={<AdminProfile />} />
-              <Route path="/upload-donation" element={<UploadDonation />} />
+                <Route
+                  path="/books-category-list"
+                  element={<BooksCategoryList />}
+                />
+                <Route path="/books-list" element={<BookList />} />
 
-              <Route
-                path="/setting-change-password"
-                element={<ChangePassword />}
-              />
-              <Route path="/about" element={<About />} />
-              <Route path="/privacy" element={<PrivacyPolicy />} />
-              <Route path="/faq" element={<FAQ />} />
-              <Route path="/terms" element={<Terms />} />
-              {/* <Route path="/settings-profile" element={<Profile />} />  */}
+                <Route path="/notification" element={<Notification />} />
+                <Route path="/setting" element={<FAQ />} />
+                <Route path="/sic" element={<SICguidelines />} />
+                <Route path="/make-admin" element={<MakeAdmin />} />
+                <Route path="/admin-profile" element={<AdminProfile />} />
+                <Route path="/upload-donation" element={<UploadDonation />} />
 
-              <Route path="/feedback" element={<Feedback />} />
-            </Route>
+                <Route
+                  path="/setting-change-password"
+                  element={<ChangePassword />}
+                />
+                <Route path="/about" element={<About />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/terms" element={<Terms />} />
+                {/* <Route path="/settings-profile" element={<Profile />} />  */}
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/otp" element={<Otp />} />
-            <Route path="/update-password" element={<UpdatePassword />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Router>
+                <Route path="/feedback" element={<Feedback />} />
+              </Route>
+
+              <Route path="/login" element={<Login />} />
+              {/* <Route path="/register" element={<Register />} /> */}
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/otp" element={<Otp />} />
+              <Route path="/update-password" element={<UpdatePassword />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Router>
+
+          <Toaster position="top-right" />
+        </Provider>
       </div>
     </>
   );

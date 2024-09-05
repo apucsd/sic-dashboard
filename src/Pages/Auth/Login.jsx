@@ -3,9 +3,30 @@ import React from "react";
 import { useNavigate } from "react-router";
 
 import "./style.css";
+import { useLoginUserMutation } from "../../redux/api/authApi";
+import { toast } from "sonner";
+import { setAccessToken } from "../../utils/utils";
 const Login = () => {
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const [loginUser] = useLoginUserMutation();
+  const onFinish = async (values) => {
+    const loginUserInfo = {
+      email: values.email,
+      password: values.password,
+    };
+
+    // login user
+    try {
+      const res = await loginUser(loginUserInfo).unwrap();
+      console.log(res);
+      if (res.success) {
+        toast.success(res.message);
+        setAccessToken(res.data.accessToken);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message || "Something went wrong!!!");
+    }
   };
 
   const navigate = useNavigate();
@@ -146,7 +167,7 @@ const Login = () => {
 
           <Form.Item style={{ marginBottom: 0 }}>
             <Button
-              onClick={() => navigate("/")}
+              // onClick={() => navigate("/")}
               type="primary"
               htmlType="submit"
               className="login-form-button"

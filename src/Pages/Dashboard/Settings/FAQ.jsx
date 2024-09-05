@@ -1,45 +1,49 @@
 import { Form, Input, Modal, Table, Button, Row, Col } from "antd";
-import TextArea from "antd/es/input/TextArea";
 import React, { useEffect, useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa6";
 import { GoQuestion } from "react-icons/go";
 import { RxCross2 } from "react-icons/rx";
+import {
+  useAddFaqMutation,
+  useDeleteFaqMutation,
+  useGetFaqQuery,
+  useUpdateFaqMutation,
+} from "../../../redux/api/faqApi";
+import { toast } from "sonner";
 
-import Swal from "sweetalert2";
-
-const data = [
-  {
-    key: "1",
-    question: "What is an affiliate e-commerce website?",
-    ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-  },
-  {
-    key: "2",
-    question: "What is an affiliate e-commerce website?2",
-    ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-  },
-  {
-    key: "3",
-    question: "What is an affiliate e-commerce website?",
-    ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-  },
-  {
-    key: "4",
-    question: "What is an affiliate e-commerce website?",
-    ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-  },
-  {
-    key: "5",
-    question: "What is an affiliate e-commerce website?",
-    ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-  },
-  {
-    key: "6",
-    question: "What is an affiliate e-commerce website?",
-    ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-  },
-];
+// const data = [
+//   {
+//     key: "1",
+//     question: "What is an affiliate e-commerce website?",
+//     ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
+//   },
+//   {
+//     key: "2",
+//     question: "What is an affiliate e-commerce website?2",
+//     ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
+//   },
+//   {
+//     key: "3",
+//     question: "What is an affiliate e-commerce website?",
+//     ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
+//   },
+//   {
+//     key: "4",
+//     question: "What is an affiliate e-commerce website?",
+//     ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
+//   },
+//   {
+//     key: "5",
+//     question: "What is an affiliate e-commerce website?",
+//     ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
+//   },
+//   {
+//     key: "6",
+//     question: "What is an affiliate e-commerce website?",
+//     ans: "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
+//   },
+// ];
 const FAQ = () => {
   const [openAddModel, setOpenAddModel] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -48,19 +52,75 @@ const FAQ = () => {
   const [editID, seteditID] = useState("");
   const [question, setQuestion] = useState("");
   const [ans, setans] = useState("");
+  //redux hooks for add faq
+  const [addFaq] = useAddFaqMutation();
+  // redux hooks for get faq
+  const { data: faqData, isLoading } = useGetFaqQuery({});
+  // redux hooks for update faq
+  const [updateFaq] = useUpdateFaqMutation();
+  const [deleteFaq] = useDeleteFaqMutation();
 
-  const handelsubmit = (e) => {
+  //add faq section
+  const handelsubmit = async (e) => {
     e.preventDefault();
     const question = e.target.question.value;
-    const ans = e.target.ans.value;
-    if (!question || !ans) {
+    const answer = e.target.answer.value;
+    if (!question || !answer) {
       return false;
     }
+
+    const faqInfo = {
+      question,
+      answer,
+    };
     // add faq
+    try {
+      const res = await addFaq(faqInfo).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+        setOpenAddModel(false);
+      }
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!!!");
+    }
   };
   //update faq
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
+    // console.log(editID);
+    const updatedFaq = {
+      data: {
+        question,
+        answer: ans,
+      },
+      id: editID,
+    };
+    // update faq
+    try {
+      const res = await updateFaq(updatedFaq).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+        setOpenEditModal(false);
+      }
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!!!");
+    }
+  };
+  const handeldelete = async () => {
+    // console.log(editID);
+    const deleteFaqData = {
+      id: deleteId,
+    };
+    // update faq
+    try {
+      const res = await deleteFaq(deleteFaqData).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+        setShowDelete(false);
+      }
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!!!");
+    }
   };
   return (
     <div className="bg-white  px-3 py-2 rounded-lg">
@@ -103,7 +163,7 @@ const FAQ = () => {
         </div>
       </div>
       <div className="bg-white py-6 px-4 rounded-md">
-        {data.map((item, index) => (
+        {faqData?.data?.map((item, index) => (
           <div key={index} className="flex justify-between items-start gap-4 ">
             <div className="mt-3">
               <GoQuestion color="#DBB162" size={25} />
@@ -125,7 +185,7 @@ const FAQ = () => {
               <CiEdit
                 onClick={() => {
                   setOpenEditModal(true);
-                  const filterdData = FAQData.filter(
+                  const filterdData = faqData?.data?.filter(
                     (filterId) => filterId?._id === item?._id
                   );
                   setQuestion(filterdData[0]?.question);
@@ -202,7 +262,7 @@ const FAQ = () => {
                   width: "100%",
                   resize: "none",
                 }}
-                name="ans"
+                name="answer"
               />
             </div>
             <input
@@ -322,7 +382,7 @@ const FAQ = () => {
             Do you want to delete this content ?
           </p>
           <button
-            // onClick={handeldelete}
+            onClick={handeldelete}
             className="bg-[#DBB162] py-2 px-5 text-white rounded-md"
           >
             Confirm
