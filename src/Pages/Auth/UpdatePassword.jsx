@@ -3,25 +3,58 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./style.css";
+import { toast } from "sonner";
+import { useResetPasswordMutation } from "../../redux/api/authApi";
 const UpdatePassword = () => {
+  const [resetPassword] = useResetPasswordMutation();
   const navigate = useNavigate();
   const [newPassError, setNewPassError] = useState("");
   const [conPassError, setConPassError] = useState("");
   const [err, setErr] = useState("");
-  const onFinish = (values) => {
-    const { password, confirmPassword } = values;
-    Swal.fire({
-      title: "Successfully",
-      text: "Your password has been updated, please change your password regularly to avoid this happening",
-      showDenyButton: false,
-      showCancelButton: false,
-      confirmButtonText: "Confirm",
-      confirmButtonColor: "#F27405",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate("/");
+  const onFinish = async (values) => {
+    const { newPassword, confirmPassword } = values;
+    if (newPassword !== confirmPassword) {
+      toast.error("Confirm password did not match!!!");
+    }
+    if (newPassword.length < 6) {
+      toast.error("Password can be less then 6 digit !!!");
+    }
+    const resetPasswordInfo = {
+      email: JSON.parse(localStorage.getItem("email")),
+      newPassword,
+    };
+    try {
+      const res = await fetch(
+        "http://192.168.10.18:5001/api/v1/auth/reset-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("accessToken"),
+          },
+
+          body: JSON.stringify(resetPasswordInfo),
+        }
+      );
+      const data = await res.json();
+
+      if (data.success) {
+        Swal.fire({
+          title: "Successfully",
+          text: "Your password has been updated, please change your password regularly to avoid this happening",
+          showDenyButton: false,
+          showCancelButton: false,
+          confirmButtonText: "Confirm",
+          confirmButtonColor: "#F27405",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate("/");
+          }
+        });
       }
-    });
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!!!");
+    }
   };
 
   return (
@@ -88,7 +121,7 @@ const UpdatePassword = () => {
               New Password
             </label>
             <Form.Item
-              name="new_password"
+              name="newPassword"
               rules={[
                 {
                   required: true,
@@ -130,7 +163,7 @@ const UpdatePassword = () => {
             </label>
             <Form.Item
               style={{ marginBottom: 0 }}
-              name="confirm_password"
+              name="confirmPassword"
               rules={[
                 {
                   required: true,

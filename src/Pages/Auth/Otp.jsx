@@ -4,27 +4,63 @@ import OTPInput from "react-otp-input";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./style.css";
+import {
+  useResendOtpMutation,
+  useVerifyOtpMutation,
+} from "../../redux/api/authApi";
+import { toast } from "sonner";
+import { setAccessToken } from "../../utils/utils";
 const Otp = () => {
+  const [verifyOtp] = useVerifyOtpMutation();
+  const [resendOtp] = useResendOtpMutation();
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
   const [err, setErr] = useState("");
 
-  const handleResendEmail = () => {
-    const email = JSON.parse(localStorage.getItem("email"));
-  };
-  const handleVerifyOtp = () => {
-    Swal.fire({
-      title: "Password Reset",
-      text: "Your password has been successfully reset. click confirm to set a new password",
-      showDenyButton: false,
-      showCancelButton: false,
-      confirmButtonText: "Confirm",
-      confirmButtonColor: "#F27405",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        navigate("/update-password");
+  const email = JSON.parse(localStorage.getItem("email"));
+  const handleResendEmail = async () => {
+    const resendOtpInfo = {
+      email: email,
+    };
+
+    try {
+      const res = await resendOtp(resendOtpInfo).unwrap();
+      if (res.success) {
+        toast.success(res.message);
       }
-    });
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  const handleVerifyOtp = async () => {
+    const otpVerifyInfo = {
+      email: email,
+      otp: Number(otp),
+      verificationType: "passwordReset",
+    };
+
+    try {
+      const res = await verifyOtp(otpVerifyInfo).unwrap();
+      // console.log(res);
+      if (res.success) {
+        console.log(res);
+        setAccessToken(res.data.accessToken);
+        Swal.fire({
+          title: "Password Reset",
+          text: "Your password has been successfully reset. click confirm to set a new password",
+          showDenyButton: false,
+          showCancelButton: false,
+          confirmButtonText: "Confirm",
+          confirmButtonColor: "#F27405",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate("/update-password");
+          }
+        });
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -83,7 +119,7 @@ const Otp = () => {
             <OTPInput
               value={otp}
               onChange={setOtp}
-              numInputs={5}
+              numInputs={6}
               inputStyle={{
                 height: "50px",
                 width: "50px",

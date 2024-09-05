@@ -3,22 +3,47 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import "./style.css";
+import { useForgetPasswordMutation } from "../../redux/api/authApi";
+import { toast } from "sonner";
 
 const ForgotPassword = () => {
+  const [forgetPassword] = useForgetPasswordMutation();
   const navigate = useNavigate();
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     localStorage.setItem("email", JSON.stringify(values.email));
     console.log("Received values of form: ", values.email);
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Send OTP ",
-      showConfirmButton: false,
-      timer: 1500,
-    }).then(() => {
-      navigate("/otp");
-    });
+    const forgetPasswordInfo = {
+      email: values.email,
+    };
+    try {
+      const res = await forgetPassword(forgetPasswordInfo).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Send OTP ",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          navigate("/otp");
+        });
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
+
+  // const handleForgetPassword = ()=>{
+
+  //   try {
+  //     const res = await forgetPassword()
+  //   } catch (error) {
+  //     toast.error(error.message)
+
+  //   }
+  //   navigate("/otp")
+  // }
   return (
     <div
       className="   "
@@ -95,7 +120,6 @@ const ForgotPassword = () => {
 
           <Form.Item>
             <Button
-              onClick={() => navigate("/otp")}
               type="primary"
               htmlType="submit"
               className="login-form-button"
