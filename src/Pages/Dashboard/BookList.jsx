@@ -1,103 +1,116 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { CiEdit } from "react-icons/ci";
-import { FaRegImage, FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
 import { Button, Form, Input, Modal, Select, Table } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
 import Logo from "../../assets/logo.png";
 import { FiSearch } from "react-icons/fi";
+import { useGetBookCategoryQuery } from "../../redux/api/bookCategoryApi";
+import { getSelectItems } from "../../utils/utils";
+import AddBookModal from "../../Components/Dashboard/BookModal/AddBookModal";
+import UpdateBookModal from "../../Components/Dashboard/BookModal/UpdateBookModal";
+import {
+  useDeleteBookMutation,
+  useGetBooksQuery,
+} from "../../redux/api/bookApi";
+import { toast } from "sonner";
 
-const data = [
-  {
-    key: 1,
-    category: "Worldview",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-  {
-    key: 2,
-    category: "Champs-Élysées 246",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-  {
-    key: 3,
-    category: "Way of Life",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-  {
-    key: 4,
-    category: "Champs-Élysées 246",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-  {
-    key: 5,
-    category: "Worldview",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-  {
-    key: 6,
-    category: "Champs-Élysées 246",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-  {
-    key: 7,
-    category: "Worldview",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-  {
-    key: 8,
-    category: "Champs-Élysées 246",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-  {
-    key: 9,
-    category: "Worldview",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-  {
-    key: 10,
-    category: "Worldview",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-  {
-    key: 11,
-    category: "Way of Life",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-  {
-    key: 12,
-    category: "Worldview",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-  {
-    key: 13,
-    category: "Worldview",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-  {
-    key: 14,
-    category: "Champs-Élysées 246",
-    services_photo: <img src={Logo} height={48} width={48} />,
-    service_title: "Braids",
-  },
-];
+// const data = [
+//   {
+//     key: 1,
+//     category: "Worldview",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+//   {
+//     key: 2,
+//     category: "Champs-Élysées 246",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+//   {
+//     key: 3,
+//     category: "Way of Life",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+//   {
+//     key: 4,
+//     category: "Champs-Élysées 246",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+//   {
+//     key: 5,
+//     category: "Worldview",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+//   {
+//     key: 6,
+//     category: "Champs-Élysées 246",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+//   {
+//     key: 7,
+//     category: "Worldview",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+//   {
+//     key: 8,
+//     category: "Champs-Élysées 246",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+//   {
+//     key: 9,
+//     category: "Worldview",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+//   {
+//     key: 10,
+//     category: "Worldview",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+//   {
+//     key: 11,
+//     category: "Way of Life",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+//   {
+//     key: 12,
+//     category: "Worldview",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+//   {
+//     key: 13,
+//     category: "Worldview",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+//   {
+//     key: 14,
+//     category: "Champs-Élysées 246",
+//     services_photo: <img src={Logo} height={48} width={48} />,
+//     service_title: "Braids",
+//   },
+// ];
 
 const BookList = () => {
+  const { data: bookCategory } = useGetBookCategoryQuery({});
+  const { data: allBooks } = useGetBooksQuery({});
+  const [deleteBook] = useDeleteBookMutation();
+
   const [openAddModel, setOpenAddModel] = useState(false);
-  const [imgFile, setImgFile] = useState(null);
-  const [category, setCategory] = useState("location");
+  const [openUpdateModal, setUpdateModal] = useState(false);
+  const [updateBookId, setUpdateBookId] = useState(null);
   const [page, setPage] = useState(
     new URLSearchParams(window.location.search).get("page") || 1
   );
@@ -112,28 +125,23 @@ const BookList = () => {
     onChange: onSelectChange,
   };
 
-  const handleChange = (e) => {
-    const file = e.target.files[0];
-    setImgFile(file);
-  };
+  // const dropdownRef = useRef();
+  // const items = [
+  //   {
+  //     label: "Car",
+  //     key: "Car",
+  //   },
+  //   {
+  //     label: "Bike",
+  //     key: "Bike",
+  //   },
+  //   {
+  //     label: "Cycle",
+  //     key: "Cycle",
+  //   },
+  // ];
 
-  const [itemForEdit, setItemForEdit] = useState(null);
-  const dropdownRef = useRef();
-  const items = [
-    {
-      label: "Car",
-      key: "Car",
-    },
-    {
-      label: "Bike",
-      key: "Bike",
-    },
-    {
-      label: "Cycle",
-      key: "Cycle",
-    },
-  ];
-
+  const booksCategoryItems = getSelectItems(bookCategory?.data);
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -143,43 +151,61 @@ const BookList = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
       cancelButtonText: "No",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        try {
+          const res = await deleteBook(id).unwrap();
+          if (res.success) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        } catch (error) {
+          toast.error(error.message);
+          console.log(error.message);
+        }
       }
     });
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDate(false);
-        setOpen("");
-        setFilter(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  //       setDate(false);
+  //       setOpen("");
+  //       setFilter(false);
+  //     }
+  //   };
+  //   document.addEventListener("click", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, []);
 
   const columns = [
     {
       title: "S.No",
-      dataIndex: "key",
-      key: "key",
+      dataIndex: "_id",
+      key: "_id",
+      render: (_text, _record, index) => {
+        return <p key={index}>{index + 1}</p>;
+      },
+    },
+
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      align: "center",
     },
     {
       title: "Services Photo",
-      dataIndex: "services_photo",
-      key: "services_photo",
+      dataIndex: "coverImage",
+      key: "coverImage",
       align: "center",
 
       render: (img, record) => {
@@ -192,60 +218,79 @@ const BookList = () => {
               gap: 12,
             }}
           >
-            <p> {img} </p>
+            <img
+              style={{
+                width: "50px",
+                height: "50px",
+                borderRadius: "50%",
+              }}
+              src={record.coverImage}
+              onError={(e) => {
+                e.target.onerror = null; // Prevents infinite loop in case default image is also broken
+                e.target.src =
+                  "https://i.pinimg.com/originals/4b/90/5b/4b905b1342b5635310923fd10319c265.jpg"; // Set default image on error
+              }}
+              alt="book"
+            />
             <p> {record?.service_title}</p>
           </div>
         );
       },
     },
     {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
+      title: "Publisher",
+      dataIndex: "publisher",
+      key: "publisher",
       align: "center",
     },
+
     {
       title: "Action",
       dataIndex: "action",
       key: "action",
       align: "center",
-      render: (_, record) => (
-        <p
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 20,
-          }}
-        >
-          <button
-            onClick={() => {
-              setOpenAddModel(true), setItemForEdit(record);
-            }}
+      render: (_, record) => {
+        // console.log(record);
+        return (
+          <p
+            key={record}
             style={{
-              cursor: "pointer",
-              border: "none",
-              outline: "none",
-              color: "#DBB162",
-              background: "white",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 20,
             }}
           >
-            <CiEdit size={25} />
-          </button>
-          <button
-            onClick={() => handleDelete()}
-            style={{
-              cursor: "pointer",
-              border: "none",
-              outline: "none",
-              background: "white",
-              color: "red",
-            }}
-          >
-            <FaRegTrashAlt size={20} />
-          </button>
-        </p>
-      ),
+            <button
+              onClick={() => {
+                setUpdateBookId(record._id);
+                setUpdateModal(true);
+              }}
+              style={{
+                cursor: "pointer",
+                border: "none",
+                outline: "none",
+                color: "#DBB162",
+                background: "white",
+              }}
+            >
+              <CiEdit size={25} />
+            </button>
+            <button
+              onClick={() => handleDelete(record._id)}
+              style={{
+                cursor: "pointer",
+                border: "none",
+                outline: "none",
+                background: "white",
+                color: "red",
+              }}
+            >
+              <FaRegTrashAlt size={20} />
+            </button>
+          </p>
+        );
+      },
     },
   ];
 
@@ -256,13 +301,13 @@ const BookList = () => {
     window.history.pushState(null, "", `?${params.toString()}`);
   };
 
-  const onClick = ({ key }) => {
-    setCategory(key);
-    const params = new URLSearchParams(window.location.search);
-    params.set("category", key);
-    window.history.pushState(null, "", `?${params.toString()}`);
-  };
-
+  // const onClick = ({ key }) => {
+  //   setCategory(key);
+  //   const params = new URLSearchParams(window.location.search);
+  //   params.set("category", key);
+  //   window.history.pushState(null, "", `?${params.toString()}`);
+  // };
+  // console.log(allBooks);
   return (
     <div>
       <div
@@ -320,7 +365,7 @@ const BookList = () => {
                 color: "black",
               }}
               //   onChange={handleChange}
-              options={items}
+              options={booksCategoryItems}
             />
 
             <Button
@@ -348,21 +393,21 @@ const BookList = () => {
               }}
               icon={<PlusOutlined />}
             >
-              Add Service
+              Add Book
             </Button>
           </div>
         </div>
         <div>
           <Table
-            rowSelection={rowSelection}
+            // rowSelection={rowSelection}
             columns={columns}
             style={{}}
-            dataSource={data}
+            dataSource={allBooks?.data?.result}
             pagination={{
               pageSize: 10,
               defaultCurrent: parseInt(page),
               onChange: handlePageChange,
-              total: 85,
+              total: allBooks?.data?.result?.length,
               showTotal: (total, range) =>
                 `Showing ${range[0]}-${range[1]} out of ${total}`,
               defaultPageSize: 20,
@@ -380,118 +425,18 @@ const BookList = () => {
           />
         </div>
       </div>
-      <Modal
-        centered
-        open={openAddModel}
-        onCancel={() => {
-          // null;
-          setImgFile(null);
-          setOpenAddModel(false);
-        }}
-        width={500}
-        footer={false}
-      >
-        <div className="p-6 ">
-          <h1
-            className="font-semibold text-[#555555] text-xl"
-            style={{ marginBottom: "10px", marginTop: "8px" }}
-          >
-            {itemForEdit ? "Update Books category" : "Add Books category"}
-          </h1>
-          <Form>
-            <div>
-              <p className="text-[#6D6D6D] py-1">Category Name</p>
-              <Form.Item
-                name="title"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input Package Name",
-                  },
-                ]}
-              >
-                <Input
-                  className="w-[100%] border outline-none px-3 py-[8px]"
-                  type="text"
-                />
-              </Form.Item>
-            </div>
 
-            <div style={{ width: "100%", marginBottom: "10px" }}>
-              <p className="text-black py-1">Category </p>
-              <Select
-                placeholder="Select Category"
-                style={{
-                  width: "100%",
-                  height: 40,
-                }}
-              >
-                <Option value="super-admin">Worldview</Option>
-                <Option value="admin">Way of Life</Option>
-              </Select>
-            </div>
-
-            <div className="mt-5">
-              <p className="text-[#6D6D6D] py-1">Slider Image</p>
-
-              <label
-                htmlFor="image"
-                style={{ display: "block", margin: "4px 0" }}
-                className="p-3 border"
-              >
-                <Form.Item name="image">
-                  <div className="flex justify-center items-center w-full h-full border-dashed border border-black py-10">
-                    {imgFile ? (
-                      <img src={URL.createObjectURL(imgFile)} alt="" />
-                    ) : (
-                      <FaRegImage className="text-2xl" />
-                    )}
-                  </div>
-
-                  <div className="hidden">
-                    <Input
-                      id="image"
-                      type="file"
-                      onInput={handleChange}
-                      style={{
-                        border: "1px solid #E0E4EC",
-                        height: "52px",
-                        background: "white",
-                        borderRadius: "8px",
-                        outline: "none",
-                      }}
-                    />
-                  </div>
-                </Form.Item>
-              </label>
-            </div>
-
-            <div className=" mt-5">
-              <p className="text-[#6D6D6D] py-1">Include link</p>
-              <Form.Item
-                name="link"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input Package Name",
-                  },
-                ]}
-              >
-                <Input
-                  className="w-[100%] h-[50px]  border outline-none px-3 py-[8px]"
-                  type="text"
-                />
-              </Form.Item>
-            </div>
-
-            <div className="text-center mt-8">
-              <button className="bg-[#DBB162] px-6 py-3 w-full text-[#FEFEFE] rounded-md">
-                Upload Book
-              </button>
-            </div>
-          </Form>
-        </div>
-      </Modal>
+      <AddBookModal
+        openAddModel={openAddModel}
+        setOpenAddModel={setOpenAddModel}
+        booksCategoryItems={booksCategoryItems}
+      />
+      <UpdateBookModal
+        openUpdateModal={openUpdateModal}
+        setUpdateModal={setUpdateModal}
+        booksCategoryItems={booksCategoryItems}
+        updateBookId={updateBookId}
+      />
     </div>
   );
 };
