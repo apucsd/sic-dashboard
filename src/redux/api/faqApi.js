@@ -15,6 +15,7 @@ export const faqApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Faq"],
     }),
     updateFaq: build.mutation({
       query: (args) => {

@@ -19,7 +19,7 @@ const Dashboard = () => {
   const [setting, setSetting] = useState(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  console.log(setting);
+  // console.log(setting);
   const handleLogOut = () => {
     navigate("/login");
     window.location.reload();

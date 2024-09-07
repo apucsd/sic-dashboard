@@ -27,15 +27,6 @@ export const privacyPolicyApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["Privacy-Policy"],
     }),
-    // deleteFaq: build.mutation({
-    //   query: (args) => {
-    //     return {
-    //       url: `/faqs/${args.id}`,
-    //       method: "DELETE",
-    //     };
-    //   },
-    //   invalidatesTags: ["Faq"],
-    // }),
   }),
 });
 

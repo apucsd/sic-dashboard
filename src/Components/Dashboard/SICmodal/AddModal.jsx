@@ -4,7 +4,7 @@ import React from "react";
 const AddModal = ({ openAddModel, setOpenAddModel }) => {
   const onFinish = (values) => {
     console.log(values);
-    // add faq
+    // add sic
   };
 
   return (
@@ -29,6 +29,7 @@ const AddModal = ({ openAddModel, setOpenAddModel }) => {
                 Guidelines details
               </label>
               <Input.TextArea
+                required
                 placeholder="Enter Guidelines details"
                 style={{
                   border: "1px solid #E0E4EC",
@@ -48,6 +49,7 @@ const AddModal = ({ openAddModel, setOpenAddModel }) => {
                 Tutorial link
               </label>
               <Input
+                required
                 placeholder="Enter Tutorial link"
                 style={{
                   border: "1px solid #E0E4EC",

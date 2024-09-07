@@ -1,159 +1,134 @@
-import { Modal } from "antd";
+import React, { useState, useRef } from "react";
+import JoditEditor from "jodit-react";
 
-import React, { useState } from "react";
-import { CiEdit } from "react-icons/ci";
-import { FaPlus } from "react-icons/fa6";
+import { toast } from "sonner";
+import {
+  useAddGuidelineMutation,
+  useGetGuidelineQuery,
+  useUpdateGuidelineMutation,
+} from "../../../redux/api/guideLineApi";
 
-import { RxCross2 } from "react-icons/rx";
-import AddModal from "../../../Components/Dashboard/SICmodal/AddModal";
-
-const data = [
-  {
-    key: "1",
-    title: "What is an affiliate e-commerce website?",
-    description:
-      "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-    link: "https://www.youtube.com/",
-  },
-  {
-    key: "2",
-    title: "What is an affiliate e-commerce website?2",
-    description:
-      "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-    link: "https://www.youtube.com/",
-  },
-  {
-    key: "3",
-    title: "What is an affiliate e-commerce website?",
-    description:
-      "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-    link: "https://www.youtube.com/",
-  },
-  {
-    key: "4",
-    title: "What is an affiliate e-commerce website?",
-    description:
-      "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-    link: "https://www.youtube.com/",
-  },
-  {
-    key: "5",
-    title: "What is an affiliate e-commerce website?",
-    description:
-      "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-    link: "https://www.youtube.com/",
-  },
-  {
-    key: "6",
-    title: "What is an affiliate e-commerce website?",
-    description:
-      "convallis. Praesent felis, placerat Ut ac quis dui volutpat vitae elementum quis adipiscing malesuada tempor non ipsum non, nec vitae amet, Donec tincidunt efficitur. in In ipsum Cras turpis viverra laoreet ullamcorper placerat diam sed leo. faucibus vitae eget vitae vehicula, luctus id Lorem fringilla tempor faucibus ipsum Vestibulum tincidunt ullamcorper elit diam turpis placerat vitae Nunc vehicula, ex faucibus venenatis at, maximus commodo urna. Nam ex quis sit non vehicula, massa urna at ",
-    link: "https://www.youtube.com/",
-  },
-];
 const SICguidelines = () => {
-  const [openAddModel, setOpenAddModel] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
+  const editor = useRef(null);
+  const [content, setContent] = useState("");
+  const [addGuideline] = useAddGuidelineMutation();
+  const [updateGuideline] = useUpdateGuidelineMutation();
+  const { data: guidelineData } = useGetGuidelineQuery({});
 
+  const config = {
+    readonly: false,
+    placeholder: "Start typings...",
+    style: {
+      height: 400,
+      background: "#FBF5EB",
+    },
+  };
+
+  //add guideline  section
+  const handleSubmit = async () => {
+    const guidelineData = {
+      content,
+    };
+    try {
+      const res = await addGuideline(guidelineData).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!!!");
+    }
+  };
+  const handleUpdate = async (id) => {
+    const guidelineData = {
+      data: {
+        content,
+      },
+      id,
+    };
+
+    try {
+      const res = await updateGuideline(guidelineData).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error) {
+      toast.error(error.message || "Something went wrong!!!");
+    }
+  };
   return (
-    <div className="bg-white  px-3 py-2 rounded-lg">
-      <div style={{ margin: "24px 0" }}>
-        <div
-          className="px-10"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <h3 style={{ fontSize: "24px", fontWeight: 600, color: "black" }}>
-            SIC guidelines
-          </h3>
-          <button
-            onClick={() => setOpenAddModel(true)}
+    <div className=" bg-white px-4 py-2 rounded-lg pb-10 ">
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          margin: "16px 0",
+        }}
+      >
+        <div>
+          <h3
+            className="font-semibold"
             style={{
-              borderRadius: "4px",
-              color: "#F2F2F2",
-              backgroundColor: "#DBB162",
-              border: "none",
-              outline: "none",
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "4px",
-              padding: "10px 20px",
+              color: "black",
+              fontSize: 22,
               fontWeight: "500",
             }}
           >
-            <FaPlus
-              style={{
-                marginTop: "-2px",
-              }}
-            />
-            Add Service
-          </button>
+            SIC Guidelines
+          </h3>
         </div>
+        <div></div>
       </div>
-      <div className="bg-white py-6 px-4 rounded-md">
-        {data.map((item, index) => (
-          <div key={index} className="flex justify-between items-start gap-4 ">
-            <div></div>
-            <div className="w-full ">
-              <div className="  border-b  py-3 px-4  rounded-xl my-4 bg-slate-50">
-                <p className=" font-medium text-[#919191]"> {item?.title}</p>
-                <p className="text-[#919191] leading-[24px] mb-6 ">
-                  {item?.description}
-                </p>
-              </div>
-              <p className="text-[#4289FF] font-medium border-b rounded-xl py-2 px-4 flex items-center gap-8 bg-slate-50">
-                <span className=" flex-1 "> {item?.link}</span>
-              </p>
-            </div>
-            <div className="w-[4%] flex justify-start items-center pt-4 gap-2">
-              <CiEdit
-                onClick={() => {
-                  setOpenAddModel(true);
-                }}
-                className="text-2xl cursor-pointer text-[#DBB162]"
-              />
-              <RxCross2
-                onClick={() => {
-                  setDeleteId(item?._id);
-                  setShowDelete(true);
-                }}
-                className="text-2xl cursor-pointer text-red-600"
-              />
-            </div>
-          </div>
-        ))}
+      <div>
+        <JoditEditor
+          ref={editor}
+          value={guidelineData?.data[0]?.content}
+          config={config}
+          tabIndex={1}
+          onBlur={(newContent) => setContent(newContent)}
+          onChange={(newContent) => {}}
+        />
       </div>
-
-      <AddModal openAddModel={openAddModel} setOpenAddModel={setOpenAddModel} />
-
-      <Modal
-        centered
-        open={showDelete}
-        onCancel={() => setShowDelete(false)}
-        width={400}
-        footer={false}
+      <div
+        style={{
+          marginTop: 24,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
       >
-        <div className="p-6 text-center">
-          <p className="text-[#DBB162] text-center font-semibold">
-            Are you sure !
-          </p>
-          <p className="pt-4 pb-12 text-center">
-            Do you want to delete this content ?
-          </p>
+        {guidelineData?.data[0] ? (
           <button
-            // onClick={handeldelete}
-            className="bg-[#DBB162] py-2 px-5 text-white rounded-md"
+            onClick={() => handleUpdate(guidelineData?.data[0]?._id)}
+            style={{
+              height: 44,
+              width: 150,
+              backgroundColor: "#DBB162",
+              color: "white",
+              borderRadius: "8px",
+              fontWeight: 500,
+              fontSize: 14,
+            }}
           >
-            Confirm
+            Update Changes
           </button>
-        </div>
-      </Modal>
+        ) : (
+          <button
+            onClick={handleSubmit}
+            style={{
+              height: 44,
+              width: 150,
+              backgroundColor: "#DBB162",
+              color: "white",
+              borderRadius: "8px",
+              fontWeight: 500,
+              fontSize: 14,
+            }}
+          >
+            Save Changes
+          </button>
+        )}
+      </div>
     </div>
   );
 };
