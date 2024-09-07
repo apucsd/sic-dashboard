@@ -114,16 +114,16 @@ const BookList = () => {
   const [page, setPage] = useState(
     new URLSearchParams(window.location.search).get("page") || 1
   );
-  const [selectionType, setSelectionType] = useState("checkbox");
+  // const [selectionType, setSelectionType] = useState("checkbox");
 
-  const onSelectChange = (newSelectedRowKeys) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-    setSelectionType(newSelectedRowKeys);
-  };
-  const rowSelection = {
-    selectionType,
-    onChange: onSelectChange,
-  };
+  // const onSelectChange = (newSelectedRowKeys) => {
+  //   console.log("selectedRowKeys changed: ", newSelectedRowKeys);
+  //   setSelectionType(newSelectedRowKeys);
+  // };
+  // const rowSelection = {
+  //   selectionType,
+  //   onChange: onSelectChange,
+  // };
 
   // const dropdownRef = useRef();
   // const items = [
@@ -142,6 +142,14 @@ const BookList = () => {
   // ];
 
   const booksCategoryItems = getSelectItems(bookCategory?.data);
+
+  // get category name
+  // Function to get category name from category ID
+  const getCategoryName = (categoryId) => {
+    const category = bookCategory?.data?.find((cat) => cat._id === categoryId);
+    return category?.name || "Unknown Category";
+  };
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -243,6 +251,16 @@ const BookList = () => {
       key: "publisher",
       align: "center",
     },
+    {
+      title: "Category",
+      dataIndex: "category",
+      key: "category",
+      align: "center",
+      render: (categoryId) => {
+        const categoryName = getCategoryName(categoryId);
+        return <p>{categoryName}</p>;
+      },
+    },
 
     {
       title: "Action",
@@ -307,7 +325,7 @@ const BookList = () => {
   //   params.set("category", key);
   //   window.history.pushState(null, "", `?${params.toString()}`);
   // };
-  // console.log(allBooks);
+  console.log(allBooks);
   return (
     <div>
       <div
