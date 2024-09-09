@@ -7,213 +7,215 @@ import Logo from "../../assets/logo.png";
 import { FiArrowUpRight, FiSearch } from "react-icons/fi";
 import { BsFillPersonCheckFill } from "react-icons/bs";
 import { MdPersonOff } from "react-icons/md";
+import { useGetFeedBackQuery } from "../../redux/api/feedbackApi";
 
-const data = [
-  {
-    key: "#1239",
+// const data = [
+//   {
+//     key: "#1239",
 
-    user: {
-      name: "Mr. Mahmud",
-      img: <img src={Logo} height={48} width={48} />,
-    },
+//     user: {
+//       name: "Mr. Mahmud",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
 
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#1238",
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#1238",
 
-    user: {
-      name: "Lily",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#1237",
+//     user: {
+//       name: "Lily",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#1237",
 
-    user: {
-      name: "Kathry",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#1236",
+//     user: {
+//       name: "Kathry",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#1236",
 
-    user: {
-      name: "Priscilla",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#1235",
+//     user: {
+//       name: "Priscilla",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#1235",
 
-    user: {
-      name: "Claire",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#1234",
+//     user: {
+//       name: "Claire",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#1234",
 
-    user: {
-      name: "Irmar",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#1233",
+//     user: {
+//       name: "Irmar",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#1233",
 
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#1233",
+//     user: {
+//       name: "Gloria",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#1233",
 
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#1233",
+//     user: {
+//       name: "Gloria",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#1233",
 
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#1233",
+//     user: {
+//       name: "Gloria",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#1233",
 
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
+//     user: {
+//       name: "Gloria",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
 
-  {
-    key: "#4",
+//   {
+//     key: "#4",
 
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#5",
+//     user: {
+//       name: "Gloria",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#5",
 
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#6",
+//     user: {
+//       name: "Gloria",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#6",
 
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#7",
-    name: "Nadir",
-    user: {
-      name: "Ashutosh",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#8",
+//     user: {
+//       name: "Gloria",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#7",
+//     name: "Nadir",
+//     user: {
+//       name: "Ashutosh",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#8",
 
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#9",
+//     user: {
+//       name: "Gloria",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#9",
 
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#10",
+//     user: {
+//       name: "Gloria",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#10",
 
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-  {
-    key: "#11",
+//     user: {
+//       name: "Gloria",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+//   {
+//     key: "#11",
 
-    user: {
-      name: "Gloria",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    feedback: "i see some problem",
-    date: "01/01/2025",
-  },
-];
+//     user: {
+//       name: "Gloria",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     feedback: "i see some problem",
+//     date: "01/01/2025",
+//   },
+// ];
 
 const Feedback = () => {
+  const { data: feedbackData, isLoading } = useGetFeedBackQuery({});
   const [page, setPage] = useState(
     new URLSearchParams(window.location.search).get("page") || 1
   );
   const [open, setOpen] = useState(false);
   const [block, setBlock] = useState(false);
   const dropdownRef = useRef();
-  const items = [
-    {
-      label: "Car",
-      key: "Car",
-    },
-    {
-      label: "Bike",
-      key: "Bike",
-    },
-    {
-      label: "Cycle",
-      key: "Cycle",
-    },
-  ];
+  // const items = [
+  //   {
+  //     label: "Car",
+  //     key: "Car",
+  //   },
+  //   {
+  //     label: "Bike",
+  //     key: "Bike",
+  //   },
+  //   {
+  //     label: "Cycle",
+  //     key: "Cycle",
+  //   },
+  // ];
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -239,23 +241,37 @@ const Feedback = () => {
   const columns = [
     {
       title: "S.No",
-      dataIndex: "key",
-      key: "key",
+      dataIndex: "_id",
+      key: "_id",
+      render: (_a, _b, index) => {
+        // console.log({ _a, _b, index });
+        return <p>{index + 1}</p>;
+      },
     },
     {
       title: "User",
-      dataIndex: "user",
-      key: "user",
+      dataIndex: "userId",
+      key: "userId.fullName",
+      align: "center",
       render: (user) => {
         return (
           <div
             style={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "center",
               gap: 12,
             }}
           >
-            <p> {user?.img} </p>
+            <img
+              style={{
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+              }}
+              src={user?.avatar}
+              alt="user avatar"
+            />
 
             <p
               style={{
@@ -264,7 +280,7 @@ const Feedback = () => {
                 fontWeight: "400",
               }}
             >
-              {user?.name}
+              {user?.fullName}
             </p>
           </div>
         );
@@ -278,8 +294,8 @@ const Feedback = () => {
 
     {
       title: "Date",
-      dataIndex: "date",
-      key: "date",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
     },
     {
       title: "",
@@ -317,6 +333,8 @@ const Feedback = () => {
     params.set("page", page);
     window.history.pushState(null, "", `?${params.toString()}`);
   };
+
+  console.log(feedbackData?.data?.result);
   return (
     <div className="">
       <div
@@ -369,12 +387,13 @@ const Feedback = () => {
         <div>
           <Table
             columns={columns}
-            dataSource={data}
+            loading={isLoading}
+            dataSource={feedbackData?.data?.result}
             pagination={{
               pageSize: 10,
               defaultCurrent: parseInt(page),
               onChange: handlePageChange,
-              total: 85,
+              total: feedbackData?.data?.result?.length,
               showTotal: (total, range) =>
                 `Showing ${range[0]}-${range[1]} out of ${total}`,
               defaultPageSize: 20,

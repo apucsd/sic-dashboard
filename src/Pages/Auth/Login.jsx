@@ -12,6 +12,7 @@ const Login = () => {
     const loginUserInfo = {
       email: values.email,
       password: values.password,
+      rememberMe: values.remember,
     };
 
     // login user

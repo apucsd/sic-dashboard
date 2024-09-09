@@ -216,7 +216,7 @@ const BookList = () => {
       key: "coverImage",
       align: "center",
 
-      render: (img, record) => {
+      render: (_, record) => {
         return (
           <div
             style={{
@@ -234,7 +234,7 @@ const BookList = () => {
               }}
               src={record.coverImage}
               onError={(e) => {
-                e.target.onerror = null; // Prevents infinite loop in case default image is also broken
+                e.target.onerror = null;
                 e.target.src =
                   "https://i.pinimg.com/originals/4b/90/5b/4b905b1342b5635310923fd10319c265.jpg"; // Set default image on error
               }}
@@ -325,7 +325,10 @@ const BookList = () => {
   //   params.set("category", key);
   //   window.history.pushState(null, "", `?${params.toString()}`);
   // };
-  console.log(allBooks);
+
+  const handleFilterBookBySelect = (value) => {
+    console.log(value);
+  };
   return (
     <div>
       <div
@@ -382,7 +385,7 @@ const BookList = () => {
                 height: 40,
                 color: "black",
               }}
-              //   onChange={handleChange}
+              onChange={(value) => handleFilterBookBySelect(value)}
               options={booksCategoryItems}
             />
 

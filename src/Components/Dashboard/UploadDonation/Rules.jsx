@@ -1,24 +1,33 @@
 import JoditEditor from "jodit-react";
 import React, { useRef, useState } from "react";
+import { toast } from "sonner";
 
-const Rules = () => {
+const Rules = ({ setActiveTab, setRulesData }) => {
   const editor = useRef(null);
   const [content, setContent] = useState("");
-  const [isLoading, seLoading] = useState(false);
 
   const config = {
     readonly: false,
-    placeholder:
-      "viverra placerat. urna. viverra Nunc eget eu risus nec placerat eu luctus lacus ac leo. scelerisque eu nec vel Ut tincidunt ex Morbi volutpat Donec venenatis tortor. urna. placerat risus massa Sed ex. vel Nam nisi scelerisque amet, nulla,nulla, Nunc viverra tempor urna eget efficitur. commodo lorem. elit quis dolor amet, non viverra eget tincidunt venenatis Ut elementum lorem. orci faucibus lacus elit convallis. non quis dolor ipsum urna malesuada turpis Vestibulum Lorem ",
+    placeholder: "Type Rule Definition...",
     style: {
       height: 400,
       background: "#FBF5EB",
     },
   };
+
+  const handleNext = () => {
+    if (!content) {
+      toast.error("Please fill in all the required fields before proceeding.");
+
+      return;
+    }
+    setRulesData(content);
+    // Move to the next tab
+    setActiveTab("3");
+  };
   return (
     <div>
       <p className="text-[#A1A1A1]  font-semibold text-lg py-4">
-        {" "}
         Rules & regulations
       </p>
       <div>
@@ -28,19 +37,21 @@ const Rules = () => {
             value={content}
             config={config}
             tabIndex={1}
+            onChange={() => {}}
             onBlur={(newContent) => setContent(newContent)}
-            onChange={(newContent) => {}}
           />
         </div>
         <div
           style={{
             marginTop: 24,
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "end",
             alignItems: "center",
+            gap: 2,
           }}
         >
           <button
+            onClick={() => setActiveTab("1")}
             style={{
               height: 44,
               width: 150,
@@ -51,7 +62,21 @@ const Rules = () => {
               fontSize: 14,
             }}
           >
-            Confirm
+            Back
+          </button>
+          <button
+            onClick={() => handleNext()}
+            style={{
+              height: 44,
+              width: 150,
+              backgroundColor: "#D29E3B",
+              color: "white",
+              borderRadius: "8px",
+              fontWeight: 500,
+              fontSize: 14,
+            }}
+          >
+            Next
           </button>
         </div>
       </div>

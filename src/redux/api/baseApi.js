@@ -25,6 +25,9 @@ const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
   if (result?.error?.status === 403) {
     toast.error(result.error.data.message);
   }
+  if (result?.error?.status === 409) {
+    toast.error(result.error.data.message);
+  }
   if (result?.error?.status === 401) {
     //* Send Refresh
     console.log("Sending refresh token");
@@ -47,6 +50,7 @@ const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
       window.location.replace("/login");
     }
   }
+  // console.log(result);
   return result;
 };
 
@@ -62,6 +66,8 @@ export const baseApi = createApi({
     "About",
     "Category",
     "Book",
+    "Donation",
+    "Feedback",
   ],
   endpoints: () => ({}),
 });
