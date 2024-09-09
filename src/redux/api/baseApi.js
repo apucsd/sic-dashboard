@@ -68,6 +68,7 @@ export const baseApi = createApi({
     "Book",
     "Donation",
     "Feedback",
+    "Admin",
   ],
   endpoints: () => ({}),
 });

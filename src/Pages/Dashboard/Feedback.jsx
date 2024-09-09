@@ -8,6 +8,7 @@ import { FiArrowUpRight, FiSearch } from "react-icons/fi";
 import { BsFillPersonCheckFill } from "react-icons/bs";
 import { MdPersonOff } from "react-icons/md";
 import { useGetFeedBackQuery } from "../../redux/api/feedbackApi";
+import dayjs from "dayjs";
 
 // const data = [
 //   {
@@ -252,14 +253,14 @@ const Feedback = () => {
       title: "User",
       dataIndex: "userId",
       key: "userId.fullName",
-      align: "center",
+      align: "start",
       render: (user) => {
         return (
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
+              justifyContent: "start",
               gap: 12,
             }}
           >
@@ -294,11 +295,15 @@ const Feedback = () => {
 
     {
       title: "Date",
-      dataIndex: "updatedAt",
-      key: "updatedAt",
+      dataIndex: "createdAt",
+      key: "createdAt",
+
+      render: (date) => {
+        return <p>{dayjs(date).format("DD-MMM-YYYY")}</p>;
+      },
     },
     {
-      title: "",
+      title: "Action",
       dataIndex: "action",
       key: "action",
       render: (_, record) => (

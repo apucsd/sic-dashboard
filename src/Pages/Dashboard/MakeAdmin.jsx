@@ -8,130 +8,137 @@ const { Option } = Select;
 
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import {
+  useAddAdminMutation,
+  useGetAdminQuery,
+} from "../../redux/api/adminApi";
+import { toast } from "sonner";
 
-const data = [
-  {
-    key: "1",
+// const data = [
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-  {
-    key: "1",
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+//   {
+//     key: "1",
 
-    email: "asad@gmail.com",
-    admin_name: "Asad",
-    admin_type: "Super admin",
-  },
-];
+//     email: "asad@gmail.com",
+//     admin_name: "Asad",
+//     admin_type: "Super admin",
+//   },
+// ];
 
 const SalonCategoryList = () => {
+  const [addAdmin] = useAddAdminMutation();
+  const { data: adminData } = useGetAdminQuery({});
   const [openAddModel, setOpenAddModel] = useState(false);
   const [imgFile, setImgFile] = useState(null);
   const [category, setCategory] = useState("location");
@@ -194,14 +201,16 @@ const SalonCategoryList = () => {
   const columns = [
     {
       title: "S.No",
-      dataIndex: "key",
-      key: "key",
-      width: 150,
+      dataIndex: "_id",
+      key: "_id",
+      render: (_a, _b, index) => {
+        return <p>{index + 1}</p>;
+      },
     },
     {
       title: "Admin Name",
-      dataIndex: "admin_name",
-      key: "admin_name",
+      dataIndex: "fullName",
+      key: "fullName",
     },
 
     {
@@ -209,11 +218,7 @@ const SalonCategoryList = () => {
       dataIndex: "email",
       key: "email",
     },
-    {
-      title: "Admin Type",
-      dataIndex: "admin_type",
-      key: "admin_type",
-    },
+
     {
       title: "Action",
       dataIndex: "action",
@@ -222,6 +227,7 @@ const SalonCategoryList = () => {
       textAlign: "center",
       render: (_, record) => (
         <button
+          onClick={() => handleDelete(record._id)}
           style={{
             cursor: "pointer",
             border: "none",
@@ -258,6 +264,19 @@ const SalonCategoryList = () => {
     window.history.pushState(null, "", `?${params.toString()}`);
   };
 
+  const handleAddAdmin = async (values) => {
+    console.log(values);
+
+    try {
+      const res = await addAdmin(values).unwrap();
+      if (res.success) {
+        toast.success(res.message);
+        setOpenAddModel(false);
+      }
+    } catch (error) {
+      toast.error(error?.data?.message);
+    }
+  };
   return (
     <div>
       <div
@@ -299,7 +318,7 @@ const SalonCategoryList = () => {
               }}
               icon={<PlusOutlined />}
             >
-              Create admin profile
+              Add Admin
             </Button>
           </div>
         </div>
@@ -307,12 +326,12 @@ const SalonCategoryList = () => {
           <Table
             columns={columns}
             style={{}}
-            dataSource={data}
+            dataSource={adminData?.data?.result}
             pagination={{
               pageSize: 10,
               defaultCurrent: parseInt(page),
               onChange: handlePageChange,
-              total: 85,
+              total: adminData?.data?.result?.length,
               showTotal: (total, range) =>
                 `Showing ${range[0]}-${range[1]} out of ${total}`,
               defaultPageSize: 20,
@@ -348,15 +367,16 @@ const SalonCategoryList = () => {
           >
             {`Add new Admin`}
           </h1>
-          <Form>
+          <Form onFinish={(values) => handleAddAdmin(values)}>
             <div>
-              <p className="text-[#6D6D6D] py-1">Name</p>
+              <p className="text-[#6D6D6D] py-1">Full Name</p>
               <Form.Item
-                name="title"
+                name="fullName"
                 rules={[
                   {
                     required: true,
-                    message: "Please input Package Name",
+                    min: 3,
+                    message: "Name must be at least 3 characters",
                   },
                 ]}
               >
@@ -369,11 +389,12 @@ const SalonCategoryList = () => {
             <div>
               <p className="text-[#6D6D6D] py-1">Email </p>
               <Form.Item
-                name="title"
+                name="email"
                 rules={[
                   {
+                    type: "email",
                     required: true,
-                    message: "Please input Package Name",
+                    message: "Please input email Name",
                   },
                 ]}
               >
@@ -383,28 +404,16 @@ const SalonCategoryList = () => {
                 />
               </Form.Item>
             </div>
-            <div style={{ width: "100%" }}>
-              <p className="text-[#6D6D6D] py-1">type </p>
-              <Select
-                placeholder="Select admin type"
-                style={{
-                  width: "100%",
-                  height: 40,
-                }}
-              >
-                <Option value="super-admin">Super Admin</Option>
-                <Option value="admin">Admin</Option>
-              </Select>
-            </div>
 
             <div className="mt-5">
               <p className="text-[#6D6D6D] py-1">Password </p>
-              <Form
-                name="title"
+              <Form.Item
+                name="password"
                 rules={[
                   {
                     required: true,
-                    message: "Please input Package Name",
+                    min: 6,
+                    message: "Password must be at least 6 characters",
                   },
                 ]}
               >
@@ -412,11 +421,14 @@ const SalonCategoryList = () => {
                   className="w-[100%] border outline-none px-3 py-[10px]"
                   type="text"
                 />
-              </Form>
+              </Form.Item>
             </div>
 
             <div className="text-center mt-6">
-              <button className="bg-[#DBB162] px-6 py-3 w-full text-[#FEFEFE] rounded-md">
+              <button
+                type="submit"
+                className="bg-[#DBB162] px-6 py-3 w-full text-[#FEFEFE] rounded-md"
+              >
                 create Profile
               </button>
             </div>
