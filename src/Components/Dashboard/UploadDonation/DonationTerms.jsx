@@ -1,15 +1,17 @@
 import JoditEditor from "jodit-react";
 import React, { useRef, useState } from "react";
 import { toast } from "sonner";
+import Swal from "sweetalert2";
 
 const DonationTerms = ({
   setActiveTab,
   handleSubmitAllData,
   setTermsData,
   donationData,
+  termsData,
 }) => {
   const editor = useRef(null);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(""); // Initialize with an empty string
 
   const config = {
     readonly: false,
@@ -20,12 +22,34 @@ const DonationTerms = ({
     },
   };
   const handleNext = () => {
-    if (!content) {
-      toast.error("Please fill in all the required fields before proceeding.");
+    // Trigger blur manually to capture the latest content
 
-      return;
-    }
+    editor.current.blur();
+    console.log(content);
     setTermsData(content);
+    console.log(termsData);
+
+    // Swal.fire({
+    //   title: "Are you sure?",
+    //   icon: "warning",
+    //   showCancelButton: true,
+    //   confirmButtonColor: "#3085d6",
+    //   cancelButtonColor: "#d33",
+    //   confirmButtonText: "Yes",
+    //   cancelButtonText: "No",
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     //cheking content is have or not
+    //
+    //   }
+    // });
+
+    // if (!content) {
+    //   toast.error("Please fill in all the required fields before proceeding.");
+
+    //   return;
+    // }
+
     if (donationData?.data[0]) {
       handleSubmitAllData("update");
     } else {
@@ -35,7 +59,7 @@ const DonationTerms = ({
 
   return (
     <div>
-      <p className="text-[#A1A1A1]  font-semibold text-lg py-4">
+      <p className="text-[#A1A1A1] font-semibold text-lg py-4">
         Terms & conditions
       </p>
       <div>
@@ -46,7 +70,7 @@ const DonationTerms = ({
             config={config}
             tabIndex={1}
             onChange={() => {}}
-            onBlur={(newContent) => setContent(newContent)}
+            onBlur={(newContent) => setContent(newContent)} // Update content on blur
           />
         </div>
         <div

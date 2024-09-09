@@ -95,6 +95,8 @@ const FAQ = () => {
       },
       id: editID,
     };
+
+    // console.log(updatedFaq);
     // update faq
     try {
       const res = await updateFaq(updatedFaq).unwrap();
@@ -174,10 +176,7 @@ const FAQ = () => {
               </p>
               <div className="flex justify-start items-start gap-2 border-b  py-2 px-4  rounded-xl my-4 bg-slate-50">
                 <p className="text-[#919191] leading-[24px] mb-6 ">
-                  NIFI is a comprehensive nail salon platform app designed to
-                  connect clients with top-rated nail salons and professionals,
-                  offering features like appointment booking, style exploration,
-                  and business management tools.
+                  {item?.answer}
                 </p>
               </div>
             </div>
@@ -267,8 +266,6 @@ const FAQ = () => {
             </div>
             <input
               className="cursor-pointer"
-              htmlType="submit"
-              block
               style={{
                 border: "none",
                 height: "44px",
@@ -342,16 +339,12 @@ const FAQ = () => {
                   width: "100%",
                   resize: "none",
                 }}
-                value={
-                  "NIFI is a comprehensive nail salon platform app designed to connect clients with top-rated nail salons and professionals, offering features like appointment booking, style exploration, and business management tools."
-                }
+                value={ans}
                 name="ans"
               />
             </div>
             <input
               className="cursor-pointer"
-              htmlType="submit"
-              block
               style={{
                 border: "none",
                 height: "44px",

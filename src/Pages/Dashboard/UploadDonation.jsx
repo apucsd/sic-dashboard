@@ -19,8 +19,8 @@ const UploadDonation = () => {
 
   const [activeTab, setActiveTab] = useState("1");
   const [detailsData, setDetailsData] = useState({});
-  const [rulesData, setRulesData] = useState({});
-  const [termsData, setTermsData] = useState({});
+  const [rulesData, setRulesData] = useState("");
+  const [termsData, setTermsData] = useState("");
 
   // submit donation information
 
@@ -43,10 +43,8 @@ const UploadDonation = () => {
     formData.append("image", detailsData.image);
 
     if (type == "add") {
-      console.log("click add");
       try {
         const res = await addDonation(formData).unwrap();
-        console.log(res);
         if (res.success) {
           toast.success(res.message);
         }
@@ -54,6 +52,7 @@ const UploadDonation = () => {
     }
     if (type == "update") {
       console.log("click update");
+      console.log(data);
       const updateData = {
         data: formData,
         id: donationData?.data[0]._id,
@@ -94,6 +93,7 @@ const UploadDonation = () => {
           handleSubmitAllData={handleSubmitAllData}
           setTermsData={setTermsData}
           donationData={donationData}
+          termsData={termsData}
         />
       ),
     },

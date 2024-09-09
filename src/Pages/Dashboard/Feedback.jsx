@@ -339,7 +339,7 @@ const Feedback = () => {
     window.history.pushState(null, "", `?${params.toString()}`);
   };
 
-  console.log(feedbackData?.data?.result);
+  // console.log(feedbackData?.data?.result);
   return (
     <div className="">
       <div
