@@ -1,5 +1,5 @@
 import JoditEditor from "jodit-react";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
 
@@ -11,7 +11,7 @@ const DonationTerms = ({
   termsData,
 }) => {
   const editor = useRef(null);
-  const [content, setContent] = useState(""); // Initialize with an empty string
+  const [content, setContent] = useState(termsData || ""); // Initialize with termsData
 
   const config = {
     readonly: false,
@@ -21,40 +21,38 @@ const DonationTerms = ({
       background: "#FBF5EB",
     },
   };
+
+  // Update termsData with the current content whenever content changes
+  useEffect(() => {
+    setTermsData(content);
+  }, [content, setTermsData]);
+
   const handleNext = () => {
     // Trigger blur manually to capture the latest content
-
     editor.current.blur();
-    console.log(content);
-    setTermsData(content);
-    console.log(termsData);
 
-    // Swal.fire({
-    //   title: "Are you sure?",
-    //   icon: "warning",
-    //   showCancelButton: true,
-    //   confirmButtonColor: "#3085d6",
-    //   cancelButtonColor: "#d33",
-    //   confirmButtonText: "Yes",
-    //   cancelButtonText: "No",
-    // }).then((result) => {
-    //   if (result.isConfirmed) {
-    //     //cheking content is have or not
-    //
-    //   }
-    // });
-
-    // if (!content) {
-    //   toast.error("Please fill in all the required fields before proceeding.");
-
-    //   return;
-    // }
-
-    if (donationData?.data[0]) {
-      handleSubmitAllData("update");
-    } else {
-      handleSubmitAllData("add");
+    if (!content) {
+      toast.error("Please fill in all the required fields before proceeding.");
+      return;
     }
+
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (donationData?.data[0]) {
+          handleSubmitAllData("update");
+        } else {
+          handleSubmitAllData("add");
+        }
+      }
+    });
   };
 
   return (
@@ -69,8 +67,8 @@ const DonationTerms = ({
             value={content}
             config={config}
             tabIndex={1}
-            onChange={() => {}}
-            onBlur={(newContent) => setContent(newContent)} // Update content on blur
+            onChange={() => {}} // Capture content on change
+            onBlur={(newContent) => setContent(newContent)} // Capture on blur as well
           />
         </div>
         <div
