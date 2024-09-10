@@ -1,14 +1,11 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import { isLoggedIn } from "../utils/utils";
 
 const PrivateRoute = ({ children }) => {
   const location = useLocation();
 
-  const user = {
-    email: "tushar@gmail.com",
-  };
-
-  if (user.email) {
+  if (!!isLoggedIn()) {
     return children;
   }
 

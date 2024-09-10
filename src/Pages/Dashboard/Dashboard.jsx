@@ -13,6 +13,7 @@ import { FiUserPlus, FiLogOut } from "react-icons/fi";
 import { VscBook, VscFeedback } from "react-icons/vsc";
 import { RiNotification2Line } from "react-icons/ri";
 import donorIcon from "../../assets/donor.png";
+import Swal from "sweetalert2";
 const { Header, Sider, Content } = Layout;
 
 const Dashboard = () => {
@@ -21,8 +22,26 @@ const Dashboard = () => {
   const navigate = useNavigate();
   // console.log(setting);
   const handleLogOut = () => {
-    navigate("/login");
-    window.location.reload();
+    Swal.fire({
+      title: "Are you sure to logout?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        navigate("/login");
+        localStorage.removeItem("accessToken");
+        Swal.fire({
+          text: "User logged out successfully!!!",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
   };
 
   const linkItems = [
@@ -104,11 +123,11 @@ const Dashboard = () => {
       path: "/make-admin",
       icon: <FiUserPlus size={24} />,
     },
-    {
-      title: "Log out",
-      path: "/login",
-      icon: <FiLogOut size={24} />,
-    },
+    // {
+    //   title: "Log out",
+    //   path: "/login",
+    //   icon: <FiLogOut size={24} />,
+    // },
   ];
 
   return (
@@ -294,6 +313,30 @@ const Dashboard = () => {
               )}
             </li>
           ))}
+
+          <li
+            onClick={handleLogOut}
+            style={{
+              width: "100%",
+              display: "flex",
+              cursor: "pointer",
+              gap: "15px",
+              paddingLeft: "45px",
+            }}
+          >
+            <div style={{ height: "24px" }}>
+              <FiLogOut size={24} />
+            </div>
+            <div
+              style={{
+                fontSize: "14px",
+                textAlign: "center",
+                height: "fit-content",
+              }}
+            >
+              Log out
+            </div>
+          </li>
         </ul>
       </Sider>
 
