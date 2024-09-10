@@ -6,7 +6,6 @@ import { RiLoader3Fill } from "react-icons/ri";
 import Logo from "../../assets/logo.png";
 import { FiArrowUpRight, FiSearch } from "react-icons/fi";
 import { BsFillPersonCheckFill } from "react-icons/bs";
-import { MdPersonOff } from "react-icons/md";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
 
 const data = [
@@ -263,8 +262,8 @@ const UserDetailsList = () => {
       key: "Block",
     },
     {
-      label: "UnBlock",
-      key: "UnBlock",
+      label: "Unblock",
+      key: "Unblock",
     },
   ];
 

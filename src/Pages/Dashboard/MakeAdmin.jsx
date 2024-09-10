@@ -1,168 +1,27 @@
-import { useEffect, useRef, useState } from "react";
-import { CiEdit } from "react-icons/ci";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { useState } from "react";
 import { Button, Form, Input, Modal, Select, Table } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-
-const { Option } = Select;
-
-import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
   useAddAdminMutation,
   useGetAdminQuery,
+  useUpdateAdminStatusMutation,
 } from "../../redux/api/adminApi";
 import { toast } from "sonner";
-
-// const data = [
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-//   {
-//     key: "1",
-
-//     email: "asad@gmail.com",
-//     admin_name: "Asad",
-//     admin_type: "Super admin",
-//   },
-// ];
+import { userTypeItems } from "../../const/constant";
 
 const SalonCategoryList = () => {
   const [addAdmin] = useAddAdminMutation();
   const { data: adminData } = useGetAdminQuery({});
+  const [useUpdateAdminStatus] = useUpdateAdminStatusMutation();
   const [openAddModel, setOpenAddModel] = useState(false);
-  const [imgFile, setImgFile] = useState(null);
-  const [category, setCategory] = useState("location");
   const [page, setPage] = useState(
     new URLSearchParams(window.location.search).get("page") || 1
   );
 
-  const dropdownRef = useRef();
-  const items = [
-    {
-      label: "Car",
-      key: "Car",
-    },
-    {
-      label: "Bike",
-      key: "Bike",
-    },
-    {
-      label: "Cycle",
-      key: "Cycle",
-    },
-  ];
+  // const dropdownRef = useRef();
 
-  const handleDelete = (id) => {
+  const handleDelete = (record) => {
     Swal.fire({
       title: "Are you sure?",
       icon: "warning",
@@ -171,32 +30,46 @@ const SalonCategoryList = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
       cancelButtonText: "No",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        let status = "";
+        if (record.status === "active") {
+          status = "block";
+        } else if (record.status === "blocked") {
+          status = "unblock";
+        }
+        const updatedUserStatus = {
+          data: {
+            status: status,
+          },
+          id: record._id,
+        };
+        const res = await useUpdateAdminStatus(updatedUserStatus).unwrap();
+        if (res.success) {
+          Swal.fire({
+            text: res.message,
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
       }
     });
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDate(false);
-        setOpen("");
-        setFilter(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+  //       setDate(false);
+  //       setOpen("");
+  //       setFilter(false);
+  //     }
+  //   };
+  //   document.addEventListener("click", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, []);
 
   const columns = [
     {
@@ -218,6 +91,22 @@ const SalonCategoryList = () => {
       dataIndex: "email",
       key: "email",
     },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status) => {
+        return (
+          <p
+            style={{
+              color: status == "active" ? "green" : "red",
+            }}
+          >
+            {status}
+          </p>
+        );
+      },
+    },
 
     {
       title: "Action",
@@ -227,16 +116,18 @@ const SalonCategoryList = () => {
       textAlign: "center",
       render: (_, record) => (
         <button
-          onClick={() => handleDelete(record._id)}
+          onClick={() => handleDelete(record)}
           style={{
             cursor: "pointer",
             border: "none",
             outline: "none",
-            background: "white",
-            color: "red",
+            background: "#DBB162",
+            color: "white",
+            borderRadius: "10px",
+            padding: "4px",
           }}
         >
-          <FaRegTrashAlt size={20} />
+          Change Status
         </button>
       ),
     },
@@ -249,20 +140,20 @@ const SalonCategoryList = () => {
     window.history.pushState(null, "", `?${params.toString()}`);
   };
 
-  const onClick = ({ key }) => {
-    setCategory(key);
-    const params = new URLSearchParams(window.location.search);
-    params.set("category", key);
-    window.history.pushState(null, "", `?${params.toString()}`);
-  };
+  // const onClick = ({ key }) => {
+  //   setCategory(key);
+  //   const params = new URLSearchParams(window.location.search);
+  //   params.set("category", key);
+  //   window.history.pushState(null, "", `?${params.toString()}`);
+  // };
 
-  const onSelect = (newValue) => {
-    const date = newValue.format("MMM-DD-YYYY");
-    setValue(date);
-    const params = new URLSearchParams(window.location.search);
-    params.set("date", date);
-    window.history.pushState(null, "", `?${params.toString()}`);
-  };
+  // const onSelect = (newValue) => {
+  //   const date = newValue.format("MMM-DD-YYYY");
+  //   setValue(date);
+  //   const params = new URLSearchParams(window.location.search);
+  //   params.set("date", date);
+  //   window.history.pushState(null, "", `?${params.toString()}`);
+  // };
 
   const handleAddAdmin = async (values) => {
     console.log(values);
@@ -277,6 +168,7 @@ const SalonCategoryList = () => {
       toast.error(error?.data?.message);
     }
   };
+
   return (
     <div>
       <div

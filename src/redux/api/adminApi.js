@@ -17,27 +17,22 @@ export const adminApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Admin"],
     }),
-    // updateAdmin: build.mutation({
-    //   query: (args) => {
-    //     return {
-    //       url: `/users/admins/${args.id}`,
-    //       method: "PATCH",
-    //       body: args.data,
-    //     };
-    //   },
-    //   invalidatesTags: ["Admin"],
-    // }),
-    // deleteAdmin: build.mutation({
-    //   query: (id) => {
-    //     return {
-    //       url: `/users/admins/${id}`,
-    //       method: "DELETE",
-    //     };
-    //   },
-    //   invalidatesTags: ["Admin"],
-    // }),
+    updateAdminStatus: build.mutation({
+      query: (args) => {
+        return {
+          url: `/users/update-status/${args.id}`,
+          method: "PATCH",
+          body: args.data,
+        };
+      },
+      invalidatesTags: ["Admin"],
+    }),
   }),
 });
 
-export const { useGetFeedBackQuery, useGetAdminQuery, useAddAdminMutation } =
-  adminApi;
+export const {
+  useGetFeedBackQuery,
+  useGetAdminQuery,
+  useAddAdminMutation,
+  useUpdateAdminStatusMutation,
+} = adminApi;
