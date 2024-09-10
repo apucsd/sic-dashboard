@@ -201,6 +201,7 @@ const Feedback = () => {
     new URLSearchParams(window.location.search).get("page") || 1
   );
   const [open, setOpen] = useState(false);
+  const [feedback, setFeedback] = useState(null);
   const [block, setBlock] = useState(false);
   const dropdownRef = useRef();
   // const items = [
@@ -232,13 +233,13 @@ const Feedback = () => {
     };
   }, []);
 
-  const handleBlock = (value) => {
-    console.log(value?.key);
-    if (value?.key) {
-      setBlock(!block);
-    }
-  };
-
+  // const handleBlock = (value) => {
+  //   console.log(value?.key);
+  //   if (value?.key) {
+  //     setBlock(!block);
+  //   }
+  // };
+  // console.log(feedback);
   const columns = [
     {
       title: "S.No",
@@ -317,7 +318,10 @@ const Feedback = () => {
           }}
         >
           <button
-            onClick={() => setOpen(true)}
+            onClick={() => {
+              setFeedback(record.feedback);
+              setOpen(true);
+            }}
             style={{
               cursor: "pointer",
               border: "none",
@@ -436,11 +440,8 @@ const Feedback = () => {
                 Answer
               </label>
               <textarea
-                onChange={(e) => {
-                  setans(e.target.value);
-                }}
                 type="Text"
-                placeholder="Enter answer"
+                value={feedback}
                 style={{
                   border: "1px solid #E0E4EC",
                   padding: "10px",
