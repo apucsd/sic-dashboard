@@ -5,7 +5,7 @@ import { toast } from "sonner";
 // Define a service using a base URL and expected endpoints
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://192.168.10.18:5001/api/v1",
+  baseUrl: "http://192.168.10.18:5010/api/v1",
   credentials: "include",
   prepareHeaders: (header) => {
     const token = getAccessToken();

@@ -16,3 +16,14 @@ export const getSelectItems = (data) => {
 
   return items;
 };
+
+// const getDestructuredData = (data)=>{
+//   const destructuredData = data?.map((item) => {
+//     return {
+//       name: item.month.slice(0, 3),
+//       totalUsers: item.totalUsers,
+//     };
+//   });
+
+//   return destructuredData
+// }

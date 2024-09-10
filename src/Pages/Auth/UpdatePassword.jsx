@@ -25,7 +25,7 @@ const UpdatePassword = () => {
     };
     try {
       const res = await fetch(
-        "http://192.168.10.18:5001/api/v1/auth/reset-password",
+        "http://192.168.10.18:5010/api/v1/auth/reset-password",
         {
           method: "POST",
           headers: {

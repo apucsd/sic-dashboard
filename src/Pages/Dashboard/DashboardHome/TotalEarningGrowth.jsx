@@ -10,102 +10,19 @@ import {
   AreaChart,
   Area,
 } from "recharts";
+import { useGetUserStatsQuery } from "../../../redux/api/dashboardApi";
 
 const TotalEarningGrowth = () => {
-  const data = [
-    {
-      name: "Jan",
-      uv: 4000,
-      pv: 2400,
-      tv: "12k",
-      amt: 10,
-    },
-    {
-      name: "Feb",
-      uv: 3000,
-      pv: 1398,
-      tv: 1200,
-      amt: 20,
-    },
-    {
-      name: "Mar",
-      uv: 2000,
-      pv: 9800,
-      tv: 1200,
-      amt: 30,
-    },
-    {
-      name: "Apr",
-      uv: 2780,
-      pv: 3908,
-      tv: 1200,
-      amt: 40,
-    },
-    {
-      name: "May",
-      uv: 1890,
-      pv: 4800,
-      tv: 1200,
-      amt: 50,
-    },
-    {
-      name: "Jun",
-      uv: 2390,
-      pv: 3800,
-      tv: 1200,
-      amt: 60,
-    },
-    {
-      name: "Jul",
-      uv: 3490,
-      pv: 4300,
-      tv: 1200,
-      amt: 70,
-    },
-    {
-      name: "Aug",
-      uv: 3490,
-      pv: 4300,
-      tv: 1200,
-      amt: 80,
-    },
-    {
-      name: "Sep",
-      uv: 3490,
-      pv: 4300,
-      tv: 1200,
-      amt: 90,
-    },
-    {
-      name: "Oct",
-      uv: 3490,
-      pv: 4300,
-      tv: 1200,
-      amt: 100,
-    },
-    {
-      name: "Nov",
-      uv: 3490,
-      pv: 4300,
-      tv: 1200,
-      amt: 110,
-    },
-    {
-      name: "Dec",
-      uv: 3490,
-      pv: 4300,
-      tv: 1200,
-      amt: 120,
-    },
-  ];
-
   const [year, setYear] = useState(2024);
+  const { data: userStatsData } = useGetUserStatsQuery(year);
+  const destructuredData = userStatsData?.data?.map((item) => {
+    return {
+      name: item.month.slice(0, 3),
+      totalUsers: item.totalUsers,
+    };
+  });
 
   const items = [
-    {
-      label: 2023,
-      key: "2023",
-    },
     {
       label: 2024,
       key: "2024",
@@ -117,6 +34,10 @@ const TotalEarningGrowth = () => {
     {
       label: 2026,
       key: "2026",
+    },
+    {
+      label: 2027,
+      key: "2027",
     },
   ];
 
@@ -169,7 +90,7 @@ const TotalEarningGrowth = () => {
         </Dropdown>
       </div>
       <ResponsiveContainer width={"100%"} height={380}>
-        <AreaChart data={data} barGap={100}>
+        <AreaChart data={destructuredData} barGap={100}>
           <defs>
             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#DBB162" stopOpacity={1} />
@@ -186,7 +107,7 @@ const TotalEarningGrowth = () => {
             strokeOpacity={0}
           />
           <YAxis
-            tickCount={5}
+            tickCount={8}
             width={40}
             fontSize="12px"
             fontWeight="400"
@@ -194,9 +115,9 @@ const TotalEarningGrowth = () => {
           />
           <Tooltip />
           <Area
-            connectNulls
+            // connectNulls
             type="monotone"
-            dataKey="uv"
+            dataKey="totalUsers"
             stroke="#DBB162"
             fill="url(#colorUv)"
           />

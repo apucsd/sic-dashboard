@@ -10,8 +10,23 @@ export const dashboardApi = baseApi.injectEndpoints({
       providesTags: ["Dashboard"],
     }),
     getUserStats: build.query({
-      query: () => ({
-        url: "/dashboard/user-count/2024",
+      query: (year) => ({
+        url: `/dashboard/user-count/${year}`,
+        // /dashboard/user-count/2024
+        method: "GET",
+      }),
+      providesTags: ["Dashboard"],
+    }),
+    getDonorStats: build.query({
+      query: (year) => ({
+        url: `/dashboard/doners-count/${year}`,
+        method: "GET",
+      }),
+      providesTags: ["Dashboard"],
+    }),
+    getDonationAmountStats: build.query({
+      query: (year) => ({
+        url: `/dashboard/donation-amount/${year}`,
         method: "GET",
       }),
       providesTags: ["Dashboard"],
@@ -19,5 +34,9 @@ export const dashboardApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetDashboardMatrixQuery, useGetUserStatsQuery } =
-  dashboardApi;
+export const {
+  useGetDashboardMatrixQuery,
+  useGetUserStatsQuery,
+  useGetDonorStatsQuery,
+  useGetDonationAmountStatsQuery,
+} = dashboardApi;
