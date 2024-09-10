@@ -3,47 +3,46 @@ import { Button, Form, Input } from "antd";
 import Swal from "sweetalert2";
 import { CiEdit } from "react-icons/ci";
 import Logo from "../../assets/logo.png";
-import { useUpdateUserProfileMutation } from "../../redux/api/userApi";
+import {
+  useUpdateUserProfileImageMutation,
+  useUpdateUserProfileMutation,
+} from "../../redux/api/userApi";
 import { toast } from "sonner";
 import { useChangePasswordMutation } from "../../redux/api/authApi";
 const AdminProfile = () => {
   const [updateUserProfile] = useUpdateUserProfileMutation();
+  const [updateUserProfileImage] = useUpdateUserProfileImageMutation();
   const [changePassword] = useChangePasswordMutation();
   const [isEdit, setIsEdit] = useState(false);
-  // const handleDelete = (id) => {
-  //   Swal.fire({
-  //     title: "Are you sure?",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Yes",
-  //     cancelButtonText: "No",
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       Swal.fire({
-  //         title: "Deleted!",
-  //         text: "Your file has been deleted.",
-  //         icon: "success",
-  //         showConfirmButton: false,
-  //         timer: 1500,
-  //       });
-  //     }
-  //   });
-  // };
-
-  const [newPassError, setNewPassError] = useState("");
-  const [conPassError, setConPassError] = useState("");
-  const [curPassError, setCurPassError] = useState("");
   const [fullName, setFullName] = useState("");
   const [address, setAddress] = useState("");
   const [contact, setContact] = useState("");
 
   const [imgPick, setImagePick] = useState(null);
 
-  const onImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
+  const onImageChange = async (event) => {
+    const image = event.target.files[0];
+    if (event.target.files[0]) {
       setImagePick(URL.createObjectURL(event.target.files[0]));
+    }
+
+    if (image) {
+      const formData = new FormData();
+      formData.append("avatar", JSON.stringify(image));
+      formData.append("data", JSON.stringify({}));
+      try {
+        try {
+          const res = await updateUserProfileImage(formData).unwrap();
+          // console.log(res);
+          if (res.success) {
+            toast.success(res.message);
+          }
+        } catch (error) {
+          toast.error(
+            error.data.message || "Something went wrong while change image!!!"
+          );
+        }
+      } catch (error) {}
     }
   };
 
@@ -66,9 +65,9 @@ const AdminProfile = () => {
     }
   };
 
-  const handleReset = () => {
-    window.location.reload();
-  };
+  // const handleReset = () => {
+  //   window.location.reload();
+  // };
   const handleUpdateProfile = async () => {
     if (!fullName || !address || !contact) {
       toast.error("Please fill in all required fields.");

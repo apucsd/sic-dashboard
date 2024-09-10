@@ -8,260 +8,260 @@ import Logo from "../../assets/logo.png";
 import { FiSearch } from "react-icons/fi";
 import { useGetDonorQuery } from "../../redux/api/donorApi";
 
-const data = [
-  {
-    key: "#1239",
+// const data = [
+//   {
+//     key: "#1239",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "mr101@mail.ru",
-    contact: "(+33)7 00 55 59 27",
-    location: "Corona, Michigan",
-    amount: 800,
-  },
-  {
-    key: "#1238",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "mr101@mail.ru",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Corona, Michigan",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1238",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "xterris@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Great Falls, Maryland ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "xterris@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Great Falls, Maryland ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-  {
-    key: "#1237",
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+//   {
+//     key: "#1237",
 
-    salon: {
-      name: "SalonName",
-      img: <img src={Logo} height={48} width={48} />,
-    },
-    email: "irnabela@gmail.com",
-    contact: "(+33)7 00 55 59 27",
-    location: "Syracuse, Connecticut ",
-    amount: 800,
-  },
-];
+//     salon: {
+//       name: "SalonName",
+//       img: <img src={Logo} height={48} width={48} />,
+//     },
+//     email: "irnabela@gmail.com",
+//     contact: "(+33)7 00 55 59 27",
+//     location: "Syracuse, Connecticut ",
+//     amount: 800,
+//   },
+// ];
 
 const DonorsRecord = () => {
   const { data: donorData } = useGetDonorQuery({});
