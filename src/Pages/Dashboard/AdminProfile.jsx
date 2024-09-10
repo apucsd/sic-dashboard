@@ -3,33 +3,39 @@ import { Button, Form, Input } from "antd";
 import Swal from "sweetalert2";
 import { CiEdit } from "react-icons/ci";
 import Logo from "../../assets/logo.png";
+import { useUpdateUserProfileMutation } from "../../redux/api/userApi";
+import { toast } from "sonner";
 const AdminProfile = () => {
+  const [updateUserProfile] = useUpdateUserProfileMutation();
   const [isEdit, setIsEdit] = useState(false);
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      }
-    });
-  };
+  // const handleDelete = (id) => {
+  //   Swal.fire({
+  //     title: "Are you sure?",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes",
+  //     cancelButtonText: "No",
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       Swal.fire({
+  //         title: "Deleted!",
+  //         text: "Your file has been deleted.",
+  //         icon: "success",
+  //         showConfirmButton: false,
+  //         timer: 1500,
+  //       });
+  //     }
+  //   });
+  // };
 
   const [newPassError, setNewPassError] = useState("");
   const [conPassError, setConPassError] = useState("");
   const [curPassError, setCurPassError] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [address, setAddress] = useState("");
+  const [contact, setContact] = useState("");
 
   const [imgPick, setImagePick] = useState(null);
 
@@ -57,7 +63,23 @@ const AdminProfile = () => {
   const handleReset = () => {
     window.location.reload();
   };
-
+  const handleUpdateProfile = async () => {
+    const formData = new FormData();
+    // console.log({ fullName, address, contact });
+    const updatedData = { fullName, address, contact };
+    formData.append("data", JSON.stringify(updatedData));
+    try {
+      const res = await updateUserProfile(formData).unwrap();
+      // console.log(res);
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error) {
+      toast.error(
+        error.data.message || "Something went wrong while update profile!!!"
+      );
+    }
+  };
   return (
     <div>
       <div
@@ -155,7 +177,6 @@ const AdminProfile = () => {
           <input
             id="imageUpload"
             type="file"
-            src=""
             onChange={onImageChange}
             style={{ display: "none" }}
             alt=""
@@ -222,121 +243,112 @@ const AdminProfile = () => {
                 >
                   Edit Your Profile
                 </p>
-                <div className=" flex justify-center items-center">
-                  <div
-                    style={{
-                      marginTop: 25,
-                      width: "65%",
-                    }}
-                  >
-                    <div className=" mb-3">
-                      <label
-                        style={{
-                          color: "#636363",
-                          fontSize: 14,
-                          fontWeight: 500,
-                        }}
-                      >
-                        User Name
-                      </label>
-                      <Input
-                        placeholder="Admin Marie"
-                        style={{
-                          padding: "10px",
-                          color: "#818181",
-                          fontSize: 14,
-                          fontWeight: 400,
-                          margin: "8px 0px",
-                        }}
-                      />
-                    </div>
-                    <div className=" mb-3">
-                      <label
-                        style={{
-                          color: "#636363",
-                          fontSize: 14,
-                          fontWeight: 500,
-                        }}
-                      >
-                        Email
-                      </label>
-                      <Input
-                        placeholder="Camille@gmail.com"
-                        style={{
-                          padding: "10px",
-                          color: "#818181",
-                          fontSize: 14,
-                          fontWeight: 400,
-                          margin: "8px 0px",
-                        }}
-                      />
-                    </div>
-                    <div className=" mb-3">
-                      <label
-                        style={{
-                          color: "#636363",
-                          fontSize: 14,
-                          fontWeight: 500,
-                        }}
-                      >
-                        Contact no
-                      </label>
-                      <Input
-                        placeholder="+99007007007"
-                        style={{
-                          padding: "10px",
-                          color: "#818181",
-                          fontSize: 14,
-                          fontWeight: 400,
-                          margin: "8px 0px",
-                        }}
-                      />
-                    </div>
-                    <div className=" mb-3">
-                      <label
-                        style={{
-                          color: "#636363",
-                          fontSize: 14,
-                          fontWeight: 500,
-                        }}
-                      >
-                        Address
-                      </label>
-                      <Input
-                        placeholder="79/A Joker Vila, Gotham City"
-                        style={{
-                          padding: "10px",
-                          color: "#818181",
-                          fontSize: 14,
-                          fontWeight: 400,
-                          margin: "8px 0px",
-                        }}
-                      />
+
+                <div>
+                  <div className=" flex justify-center items-center">
+                    <div
+                      style={{
+                        marginTop: 25,
+                        width: "65%",
+                      }}
+                    >
+                      <div className=" mb-3">
+                        <label
+                          style={{
+                            color: "#636363",
+                            fontSize: 14,
+                            fontWeight: 500,
+                          }}
+                        >
+                          User Name
+                        </label>
+                        <Input
+                          onChange={(e) => setFullName(e.target.value)}
+                          name="fullName"
+                          placeholder="Admin Marie"
+                          style={{
+                            padding: "10px",
+                            color: "#818181",
+                            fontSize: 14,
+                            fontWeight: 400,
+                            margin: "8px 0px",
+                          }}
+                        />
+                      </div>
+
+                      <div className=" mb-3">
+                        <label
+                          style={{
+                            color: "#636363",
+                            fontSize: 14,
+                            fontWeight: 500,
+                          }}
+                        >
+                          Contact no
+                        </label>
+                        <Input
+                          onChange={(e) => setContact(e.target.value)}
+                          name="contactNumber"
+                          placeholder="+99007007007"
+                          style={{
+                            padding: "10px",
+                            color: "#818181",
+                            fontSize: 14,
+                            fontWeight: 400,
+                            margin: "8px 0px",
+                          }}
+                        />
+                      </div>
+                      <div className=" mb-3">
+                        <label
+                          style={{
+                            color: "#636363",
+                            fontSize: 14,
+                            fontWeight: 500,
+                          }}
+                        >
+                          Address
+                        </label>
+                        <Input
+                          onChange={(e) => setAddress(e.target.value)}
+                          name="address"
+                          placeholder="79/A Joker Vila, Gotham City"
+                          style={{
+                            padding: "10px",
+                            color: "#818181",
+                            fontSize: 14,
+                            fontWeight: 400,
+                            margin: "8px 0px",
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div
-                  style={{
-                    marginTop: 24,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Button
+                  <div
                     style={{
-                      height: 44,
-                      width: 150,
-                      backgroundColor: "#DBB162",
-                      color: "white",
-                      borderRadius: "8px",
-                      fontWeight: 500,
-                      fontSize: 14,
+                      marginTop: 24,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
-                    Save Changes
-                  </Button>
+                    <Button
+                      onClick={handleUpdateProfile}
+                      htmlType="submit"
+                      style={{
+                        height: 44,
+                        width: 150,
+                        backgroundColor: "#DBB162",
+                        color: "white",
+                        borderRadius: "8px",
+                        fontWeight: 500,
+                        fontSize: 14,
+                      }}
+                    >
+                      Save Changes
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
