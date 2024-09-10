@@ -18,6 +18,15 @@ export const authApi = baseApi.injectEndpoints({
         };
       },
     }),
+    changePassword: build.mutation({
+      query: (data) => {
+        return {
+          url: "/auth/change-password",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
     verifyOtp: build.mutation({
       query: (data) => {
         return {

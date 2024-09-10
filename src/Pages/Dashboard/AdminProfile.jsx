@@ -5,8 +5,10 @@ import { CiEdit } from "react-icons/ci";
 import Logo from "../../assets/logo.png";
 import { useUpdateUserProfileMutation } from "../../redux/api/userApi";
 import { toast } from "sonner";
+import { useChangePasswordMutation } from "../../redux/api/authApi";
 const AdminProfile = () => {
   const [updateUserProfile] = useUpdateUserProfileMutation();
+  const [changePassword] = useChangePasswordMutation();
   const [isEdit, setIsEdit] = useState(false);
   // const handleDelete = (id) => {
   //   Swal.fire({
@@ -45,18 +47,22 @@ const AdminProfile = () => {
     }
   };
 
-  const handleChangePassword = (values) => {
-    console.log(values);
-    if (values?.current_password === values.new_password) {
-      setNewPassError("The New password is semilar with old Password");
-    } else {
-      setNewPassError("");
+  const handleChangePassword = async (values) => {
+    console.log(values.currentPassword, values.confirmPassword);
+    if (values.newPassword !== values.confirmPassword) {
+      return toast.error("Confirm Password must same as current password!!!");
     }
 
-    if (values?.new_password !== values.confirm_password) {
-      setConPassError("New Password and Confirm Password Doesn't Matched");
-    } else {
-      setConPassError("");
+    try {
+      const res = await changePassword(values).unwrap();
+      // console.log(res);
+      if (res.success) {
+        toast.success(res.message);
+      }
+    } catch (error) {
+      toast.error(
+        error.data.message || "Something went wrong while change password!!!"
+      );
     }
   };
 
@@ -64,6 +70,10 @@ const AdminProfile = () => {
     window.location.reload();
   };
   const handleUpdateProfile = async () => {
+    if (!fullName || !address || !contact) {
+      toast.error("Please fill in all required fields.");
+      return; // Exit the function if validation fails
+    }
     const formData = new FormData();
     // console.log({ fullName, address, contact });
     const updatedData = { fullName, address, contact };
@@ -365,9 +375,7 @@ const AdminProfile = () => {
                 <Form
                   name="normal_login"
                   className="login-form"
-                  initialValues={{
-                    remember: true,
-                  }}
+                  initialValues={{ remember: true }}
                   style={{ width: "65%", height: "fit-content" }}
                   onFinish={handleChangePassword}
                 >
@@ -382,6 +390,7 @@ const AdminProfile = () => {
                   >
                     Change Password
                   </p>
+
                   <div style={{ marginBottom: "30px" }}>
                     <label
                       style={{
@@ -395,11 +404,13 @@ const AdminProfile = () => {
                     </label>
                     <Form.Item
                       style={{ marginBottom: 0 }}
-                      name="current_password"
+                      name="currentPassword"
                       rules={[
                         {
                           required: true,
-                          message: "Please input your current password!",
+                          min: 6,
+                          message:
+                            "Current password must be at least 6 characters",
                         },
                       ]}
                     >
@@ -416,14 +427,6 @@ const AdminProfile = () => {
                         }}
                       />
                     </Form.Item>
-                    {curPassError && (
-                      <label
-                        style={{ display: "block", color: "red" }}
-                        htmlFor="error"
-                      >
-                        {curPassError}
-                      </label>
-                    )}
                   </div>
 
                   <div style={{ marginBottom: "20px" }}>
@@ -434,16 +437,16 @@ const AdminProfile = () => {
                         fontSize: 14,
                         fontWeight: 500,
                       }}
-                      htmlFor=""
                     >
                       New Password
                     </label>
                     <Form.Item
-                      name="new_password"
+                      name="newPassword"
                       rules={[
                         {
                           required: true,
-                          message: "Please input your new Password!",
+                          min: 6,
+                          message: "New password must be at least 6 characters",
                         },
                       ]}
                       style={{ marginBottom: 0 }}
@@ -461,14 +464,6 @@ const AdminProfile = () => {
                         }}
                       />
                     </Form.Item>
-                    {newPassError && (
-                      <label
-                        style={{ display: "block", color: "red" }}
-                        htmlFor="error"
-                      >
-                        {newPassError}
-                      </label>
-                    )}
                   </div>
 
                   <div style={{ marginBottom: "40px" }}>
@@ -479,17 +474,18 @@ const AdminProfile = () => {
                         fontSize: 14,
                         fontWeight: 500,
                       }}
-                      htmlFor="email"
                     >
                       Re-Type Password
                     </label>
                     <Form.Item
                       style={{ marginBottom: 0 }}
-                      name="confirm_password"
+                      name="confirmPassword"
                       rules={[
                         {
                           required: true,
-                          message: "Please input your Re-type Password!",
+                          min: 6,
+                          message:
+                            "Confirm your password must be at least 6 characters",
                         },
                       ]}
                     >
@@ -506,14 +502,6 @@ const AdminProfile = () => {
                         }}
                       />
                     </Form.Item>
-                    {conPassError && (
-                      <label
-                        style={{ display: "block", color: "red" }}
-                        htmlFor="error"
-                      >
-                        {conPassError}
-                      </label>
-                    )}
                   </div>
 
                   <div
@@ -534,6 +522,8 @@ const AdminProfile = () => {
                         }}
                       >
                         <Button
+                          type="primary"
+                          htmlType="submit"
                           style={{
                             height: 44,
                             width: 150,
