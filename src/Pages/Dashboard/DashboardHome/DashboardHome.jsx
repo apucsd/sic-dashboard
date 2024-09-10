@@ -1,4 +1,3 @@
-import { Col, Row } from "antd";
 import React from "react";
 
 import TotalSellerChart from "./TotalSellerChart";
@@ -7,42 +6,57 @@ import { HiMiniUserGroup } from "react-icons/hi2";
 import TotalEarningGoth from "./TotalEarningGrowth";
 import doner from "../../../assets/doner.png";
 import donation from "../../../assets/donation.png";
+import { useGetDashboardMatrixQuery } from "../../../redux/api/dashboardApi";
 
 function DashboardHome() {
-  const onChange = (pageNumber) => {
-    console.log("Page: ", pageNumber);
-  };
+  const { data: dashboardMatrix, isFetching } = useGetDashboardMatrixQuery({});
+  // console.log(dashboardMatrix);
+  // const onChange = (pageNumber) => {
+  //   console.log("Page: ", pageNumber);
+  // };
 
+  if (isFetching) return <div>Loading...</div>;
+
+  // Destructure the data from dashboardMatrix
+  const {
+    totalUser = 0,
+    todayUser = 0,
+    totalDoner = 0,
+    todayDoner = 0,
+    totalDonation = 0,
+    todayDonation = 0,
+  } = dashboardMatrix?.data || {};
+
+  // Prepare the data array using the values from dashboardMatrix
   const data = [
     {
       name: "Total User",
-      count: "20.10K",
-      title1: " Daily user",
-      total: "1025",
+      count: `${totalUser.toLocaleString()}`, // Convert to string with commas
+      title1: "Daily user",
+      total: todayUser,
       icon: <HiMiniUserGroup color="#DBB162" size={24} />,
       bgColor: "#EFEFEF",
       textColor: "#DBB162",
     },
     {
-      name: "Total Salon",
-      count: "920",
-      title1: " Daily user",
-      total: "125",
-      icon: <img src={doner} />,
+      name: "Total Donor",
+      count: `${totalDoner.toLocaleString()}`,
+      title1: "Daily Donor",
+      total: todayDoner,
+      icon: <img src={doner} alt="Doner Icon" />,
       textColor: "#8E3C50",
       bgColor: "#EFEFEF",
     },
     {
       name: "Total Earning",
-      count: "150.10K",
-      title1: " Daily donation",
-      total: "$2.5k",
-      icon: <img src={donation} />,
+      count: `$${totalDonation.toLocaleString()}`,
+      title1: "Daily Donation",
+      total: `$${todayDonation}`,
+      icon: <img src={donation} alt="Donation Icon" />,
       textColor: "#F16365",
       bgColor: "#EFEFEF",
     },
   ];
-
   return (
     <div>
       <div className="grid grid-cols-3 gap-3 items-center mt-4">
@@ -99,11 +113,10 @@ function DashboardHome() {
                     color: `${item?.textColor}`,
                   }}
                 >
-                  {item.count} +
+                  {item.count}
                 </p>
 
                 <p className="flex gap-3 items-center text-[#00B047] font-medium text-lg">
-                  {" "}
                   <span> {item?.title1} </span> <span> {item?.total}</span>
                 </p>
               </div>
