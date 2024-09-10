@@ -6,6 +6,7 @@ import { RiLoader3Fill } from "react-icons/ri";
 import { FaStar } from "react-icons/fa";
 import Logo from "../../assets/logo.png";
 import { FiSearch } from "react-icons/fi";
+import { useGetDonorQuery } from "../../redux/api/donorApi";
 
 const data = [
   {
@@ -263,6 +264,10 @@ const data = [
 ];
 
 const DonorsRecord = () => {
+  const { data: donorData } = useGetDonorQuery({});
+  const donors = donorData?.data?.result;
+  const meta = donorData?.data?.meta;
+
   const [category, setCategory] = useState("Activity");
   const [page, setPage] = useState(
     new URLSearchParams(window.location.search).get("page") || 1
@@ -472,12 +477,12 @@ const DonorsRecord = () => {
           <Table
             columns={columns}
             style={{}}
-            dataSource={data}
+            dataSource={donors}
             pagination={{
               pageSize: 10,
               defaultCurrent: parseInt(page),
               onChange: handlePageChange,
-              total: 85,
+              total: meta?.total,
               showTotal: (total, range) =>
                 `Showing ${range[0]}-${range[1]} out of ${total}`,
               defaultPageSize: 20,

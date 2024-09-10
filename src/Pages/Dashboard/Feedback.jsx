@@ -372,26 +372,6 @@ const Feedback = () => {
               All Feedbacks
             </h3>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <div
-              style={{
-                width: "370px",
-                height: "40px",
-                borderRadius: "8px",
-              }}
-            >
-              <Input
-                placeholder="Search salon name & location"
-                prefix={<FiSearch size={14} color="#868FA0" />}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  fontSize: "14px",
-                }}
-                size="middle"
-              />
-            </div>
-          </div>
         </div>
         <div>
           <Table
