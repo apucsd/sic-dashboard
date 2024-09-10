@@ -89,7 +89,6 @@ const UserDetailsModal = ({ open, setOpen }) => {
               </p>
               <div className=" w-full bg-[#F1F1F1] p-5 rounded-lg">
                 <p className="text-[#767676]">
-                  {" "}
                   1. <span className="text-red-400"> reson 1</span>
                 </p>
               </div>

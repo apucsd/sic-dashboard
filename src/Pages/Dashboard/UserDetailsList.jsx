@@ -7,6 +7,12 @@ import Logo from "../../assets/logo.png";
 import { FiArrowUpRight, FiSearch } from "react-icons/fi";
 import { BsFillPersonCheckFill } from "react-icons/bs";
 import UserDetailsModal from "../../Components/Dashboard/UserDetailsModal";
+import {
+  useGetUsersQuery,
+  useUpdateUserStatusMutation,
+} from "../../redux/api/userApi";
+import { useUpdateAdminStatusMutation } from "../../redux/api/adminApi";
+import { userTypeItems } from "../../const/constant";
 
 const data = [
   {
@@ -235,6 +241,9 @@ const data = [
 ];
 
 const UserDetailsList = () => {
+  const { data: userData } = useGetUsersQuery({});
+  const [updateUserStatus] = useUpdateUserStatusMutation();
+  // console.log(userData);
   const [page, setPage] = useState(
     new URLSearchParams(window.location.search).get("page") || 1
   );
@@ -256,17 +265,6 @@ const UserDetailsList = () => {
     },
   ];
 
-  const userTypeItems = [
-    {
-      label: "Block",
-      key: "Block",
-    },
-    {
-      label: "Unblock",
-      key: "Unblock",
-    },
-  ];
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -281,26 +279,75 @@ const UserDetailsList = () => {
     };
   }, []);
 
+  const handleUpdateUserStatus = (record) => {
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        let status = "";
+        if (record.status === "active") {
+          status = "block";
+        } else if (record.status === "blocked") {
+          status = "unblock";
+        }
+        const updatedUserStatus = {
+          data: {
+            status: status,
+          },
+          id: record._id,
+        };
+        const res = await updateUserStatus(updatedUserStatus).unwrap();
+
+        if (res.success) {
+          Swal.fire({
+            text: res?.message,
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+      }
+    });
+  };
+
   const columns = [
     {
       title: "S.No",
-      dataIndex: "key",
-      key: "key",
+      dataIndex: "_id",
+      key: "_id",
+      render: (_a, _b, index) => {
+        return <p>{index + 1}</p>;
+      },
     },
     {
       title: "User",
-      dataIndex: "user",
-      key: "user",
-      render: (user) => {
+      dataIndex: "fullName",
+      key: "fullName",
+      render: (_a, record) => {
         return (
           <div
             style={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "start",
               gap: 12,
             }}
           >
-            <p> {user?.img} </p>
+            <img
+              style={{
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+              }}
+              src={record?.avatar}
+              alt="user"
+            />
 
             <p
               style={{
@@ -309,7 +356,7 @@ const UserDetailsList = () => {
                 fontWeight: "400",
               }}
             >
-              {user?.name}
+              {record?.fullName}
             </p>
           </div>
         );
@@ -323,8 +370,8 @@ const UserDetailsList = () => {
 
     {
       title: "Contact",
-      dataIndex: "contact",
-      key: "contact",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
     },
     {
       title: "Action",
@@ -352,8 +399,15 @@ const UserDetailsList = () => {
           </button>
 
           <div>
-            <button>
-              <BsFillPersonCheckFill size={25} className=" text-[#00B047]" />
+            <button onClick={() => handleUpdateUserStatus(record)}>
+              <BsFillPersonCheckFill
+                size={25}
+                className={`${
+                  record?.status == "active"
+                    ? " text-[#00B047]"
+                    : "text-red-600"
+                }`}
+              />
             </button>
           </div>
         </div>
@@ -368,6 +422,9 @@ const UserDetailsList = () => {
     window.history.pushState(null, "", `?${params.toString()}`);
   };
 
+  const handleFilterByUserStatus = (value) => {
+    console.log(value);
+  };
   return (
     <div className="">
       <div
@@ -418,6 +475,7 @@ const UserDetailsList = () => {
 
             <div>
               <Select
+                onChange={handleFilterByUserStatus}
                 defaultValue="User type"
                 style={{
                   width: 120,
@@ -460,12 +518,12 @@ const UserDetailsList = () => {
         <div>
           <Table
             columns={columns}
-            dataSource={data}
+            dataSource={userData?.data?.result}
             pagination={{
               pageSize: 10,
               defaultCurrent: parseInt(page),
               onChange: handlePageChange,
-              total: 85,
+              total: userData?.data?.meta?.total,
               showTotal: (total, range) =>
                 `Showing ${range[0]}-${range[1]} out of ${total}`,
               defaultPageSize: 20,

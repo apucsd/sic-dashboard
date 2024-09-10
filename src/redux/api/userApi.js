@@ -17,21 +17,21 @@ export const userApi = baseApi.injectEndpoints({
     //   }),
     //   invalidatesTags: ["User"],
     // }),
-    // updateUserStatus: build.mutation({
-    //     query: (args) => {
-    //       return {
-    //         url: `/users/update-status/${args.id}`,
-    //         method: "PATCH",
-    //         body: args.data,
-    //       };
-    //     },
-    //     invalidatesTags: ["User"],
-    //   }),
+    updateUserStatus: build.mutation({
+      query: (args) => {
+        return {
+          url: `/users/update-status/${args.id}`,
+          method: "PATCH",
+          body: args.data,
+        };
+      },
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
 export const {
   useGetUsersQuery,
   //   useCreateUserMutation,
-  //   useUpdateUserStatusMutation,
+  useUpdateUserStatusMutation,
 } = userApi;
