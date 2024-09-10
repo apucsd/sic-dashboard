@@ -395,7 +395,7 @@ const DonorsRecord = () => {
                 fontWeight: "500",
               }}
             >
-              All salon list
+              All Donor Record
             </h3>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>

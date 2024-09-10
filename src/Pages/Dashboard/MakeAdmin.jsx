@@ -245,8 +245,6 @@ const SalonCategoryList = () => {
         centered
         open={openAddModel}
         onCancel={() => {
-          // null;
-          setImgFile(null);
           setOpenAddModel(false);
         }}
         width={500}

@@ -117,7 +117,7 @@ const TotalSellerChart = () => {
           />
           <Tooltip />
           <YAxis
-            tickCount={15}
+            tickCount={100}
             width={40}
             fontSize="12px"
             fontWeight="400"
