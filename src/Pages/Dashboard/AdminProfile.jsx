@@ -16,7 +16,7 @@ const AdminProfile = () => {
   const [updateUserProfile] = useUpdateUserProfileMutation();
   const [updateUserProfileImage] = useUpdateUserProfileImageMutation();
   const [changePassword] = useChangePasswordMutation();
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEdit, setIsEdit] = useState(true);
   const [fullName, setFullName] = useState("");
   const [address, setAddress] = useState("");
   const [contact, setContact] = useState("");
@@ -92,6 +92,8 @@ const AdminProfile = () => {
       );
     }
   };
+  // console.log(`http://192.168.10.18:5010/${user?.avatar}`);
+
   return (
     <div>
       <div
@@ -146,8 +148,8 @@ const AdminProfile = () => {
               >
                 <img
                   // src={imgPick ? imgPick : Logo}
-                  src={user?.avatar ? user.avatar : Logo}
-                  alt=""
+                  src={`${import.meta.env.VITE_IMAGE_API_URL}/${user?.avatar}`}
+                  alt="User Avatar"
                   style={{
                     height: 114,
                     width: 119,
@@ -278,7 +280,8 @@ const AdminProfile = () => {
                         <Input
                           onChange={(e) => setFullName(e.target.value)}
                           name="fullName"
-                          placeholder="Admin Marie"
+                          // placeholder="Admin Marie"
+                          defaultValue={user?.fullName}
                           style={{
                             padding: "10px",
                             color: "#818181",
@@ -302,6 +305,7 @@ const AdminProfile = () => {
                         <Input
                           onChange={(e) => setContact(e.target.value)}
                           name="contactNumber"
+                          defaultValue={user?.phoneNumber}
                           placeholder="+99007007007"
                           style={{
                             padding: "10px",
@@ -325,6 +329,7 @@ const AdminProfile = () => {
                         <Input
                           onChange={(e) => setAddress(e.target.value)}
                           name="address"
+                          defaultValue={user?.address}
                           placeholder="79/A Joker Vila, Gotham City"
                           style={{
                             padding: "10px",

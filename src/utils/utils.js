@@ -1,3 +1,5 @@
+import { jwtDecode } from "jwt-decode";
+
 export const setAccessToken = (token) => {
   return localStorage.setItem("accessToken", token);
 };
@@ -19,4 +21,14 @@ export const getSelectItems = (data) => {
 
 export const isLoggedIn = () => {
   return localStorage.getItem("accessToken");
+};
+
+export const getUserRole = () => {
+  const token = localStorage.getItem("accessToken");
+
+  if (token) {
+    const decoded = jwtDecode(token);
+    return decoded.role;
+  }
+  return null;
 };

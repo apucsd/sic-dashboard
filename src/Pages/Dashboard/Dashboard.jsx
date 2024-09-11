@@ -417,11 +417,11 @@ const Dashboard = () => {
               }}
             >
               <img
-                src={user?.avatar ? user.avatar : Logo}
+                src={`${import.meta.env.VITE_IMAGE_API_URL}/${user?.avatar}`}
                 style={{
                   width: "44px",
                   height: "44px",
-                  borderRadius: "100%",
+                  borderRadius: "50%",
                   borderColor: "#DBB162",
                   borderWidth: 2,
                 }}
