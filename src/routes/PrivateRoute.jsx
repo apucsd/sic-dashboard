@@ -10,7 +10,7 @@ const PrivateRoute = ({ children }) => {
   //   toast.error("You are not authorized to access here!!!");
   //   return <Navigate to="/login" state={{ from: location }} />;
   // }
-  if (!!isLoggedIn() && role == "ADMIN") {
+  if ((!!isLoggedIn() && role == "ADMIN") || "SUPER-ADMIN") {
     return children;
   }
 
