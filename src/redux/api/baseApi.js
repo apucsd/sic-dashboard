@@ -59,7 +59,8 @@ const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
       );
     } else {
       localStorage.removeItem("accessToken");
-      // window.location.replace("/login");
+      toast.error("You are not authorized!");
+      window.location.replace("/login");
     }
   }
   // console.log(result);
