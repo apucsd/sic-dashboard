@@ -11,15 +11,16 @@ import {
 import { toast } from "sonner";
 import { useChangePasswordMutation } from "../../redux/api/authApi";
 const AdminProfile = () => {
-  const { data } = useGetUserProfileQuery({});
+  const { data, isFetching } = useGetUserProfileQuery({});
+
   const user = data?.data;
   const [updateUserProfile] = useUpdateUserProfileMutation();
   const [updateUserProfileImage] = useUpdateUserProfileImageMutation();
   const [changePassword] = useChangePasswordMutation();
   const [isEdit, setIsEdit] = useState(true);
-  const [fullName, setFullName] = useState("");
-  const [address, setAddress] = useState("");
-  const [contact, setContact] = useState("");
+  const [fullName, setFullName] = useState(user?.fullName || "");
+  const [address, setAddress] = useState(user?.address || "");
+  const [contact, setContact] = useState(user?.phoneNumber || "");
 
   const [imgPick, setImagePick] = useState(null);
 
@@ -93,7 +94,7 @@ const AdminProfile = () => {
     }
   };
   // console.log(`http://192.168.10.18:5010/${user?.avatar}`);
-
+  console.log(user);
   return (
     <div>
       <div
@@ -305,7 +306,7 @@ const AdminProfile = () => {
                         <Input
                           onChange={(e) => setContact(e.target.value)}
                           name="contactNumber"
-                          defaultValue={user?.phoneNumber}
+                          value={contact} // Controlled input value
                           placeholder="+99007007007"
                           style={{
                             padding: "10px",
