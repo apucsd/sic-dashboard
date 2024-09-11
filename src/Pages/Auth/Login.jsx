@@ -7,7 +7,7 @@ import { useLoginUserMutation } from "../../redux/api/authApi";
 import { toast } from "sonner";
 import { setAccessToken } from "../../utils/utils";
 const Login = () => {
-  const [loginUser] = useLoginUserMutation();
+  const [loginUser, { isLoading }] = useLoginUserMutation();
   const onFinish = async (values) => {
     const loginUserInfo = {
       email: values.email,
@@ -181,7 +181,7 @@ const Login = () => {
                 marginTop: "56px",
               }}
             >
-              Sign In
+              {isLoading ? "Loading..." : "  Sign In"}
             </Button>
           </Form.Item>
         </Form>

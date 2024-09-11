@@ -12,7 +12,7 @@ const Details = ({ setActiveTab, setDetailsData }) => {
     readonly: false,
     placeholder: "Type your description...",
     style: {
-      height: 400,
+      height: 300,
       background: "#FBF5EB",
     },
   };

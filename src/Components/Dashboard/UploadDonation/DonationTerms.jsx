@@ -17,7 +17,7 @@ const DonationTerms = ({
     readonly: false,
     placeholder: "Typing terms...",
     style: {
-      height: 400,
+      height: 300,
       background: "#FBF5EB",
     },
   };

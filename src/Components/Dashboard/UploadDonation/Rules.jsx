@@ -10,7 +10,7 @@ const Rules = ({ setActiveTab, setRulesData }) => {
     readonly: false,
     placeholder: "Type Rule Definition...",
     style: {
-      height: 400,
+      height: 300,
       background: "#FBF5EB",
     },
   };
