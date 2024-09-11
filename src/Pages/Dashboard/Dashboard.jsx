@@ -14,9 +14,13 @@ import { VscBook, VscFeedback } from "react-icons/vsc";
 import { RiNotification2Line } from "react-icons/ri";
 import donorIcon from "../../assets/donor.png";
 import Swal from "sweetalert2";
+import { useGetUserProfileQuery } from "../../redux/api/userApi";
 const { Header, Sider, Content } = Layout;
 
 const Dashboard = () => {
+  const { data } = useGetUserProfileQuery({});
+  const user = data?.data;
+  // console.log(user);
   const [setting, setSetting] = useState(false);
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -413,7 +417,7 @@ const Dashboard = () => {
               }}
             >
               <img
-                src={Logo}
+                src={user?.avatar ? user.avatar : Logo}
                 style={{
                   width: "44px",
                   height: "44px",
@@ -431,7 +435,7 @@ const Dashboard = () => {
                   width: 200,
                 }}
               >
-                Admin Asad
+                {user ? user?.fullName : "Anonymous"}
               </h2>
             </Link>
           </div>

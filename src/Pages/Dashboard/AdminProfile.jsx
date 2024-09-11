@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { Button, Form, Input } from "antd";
-import Swal from "sweetalert2";
+
 import { CiEdit } from "react-icons/ci";
 import Logo from "../../assets/logo.png";
 import {
+  useGetUserProfileQuery,
   useUpdateUserProfileImageMutation,
   useUpdateUserProfileMutation,
 } from "../../redux/api/userApi";
 import { toast } from "sonner";
 import { useChangePasswordMutation } from "../../redux/api/authApi";
 const AdminProfile = () => {
+  const { data } = useGetUserProfileQuery({});
+  const user = data?.data;
   const [updateUserProfile] = useUpdateUserProfileMutation();
   const [updateUserProfileImage] = useUpdateUserProfileImageMutation();
   const [changePassword] = useChangePasswordMutation();
@@ -28,7 +31,7 @@ const AdminProfile = () => {
 
     if (image) {
       const formData = new FormData();
-      formData.append("avatar", JSON.stringify(image));
+      formData.append("avatar", image);
       formData.append("data", JSON.stringify({}));
       try {
         try {
@@ -142,7 +145,8 @@ const AdminProfile = () => {
                 }}
               >
                 <img
-                  src={imgPick ? imgPick : Logo}
+                  // src={imgPick ? imgPick : Logo}
+                  src={user?.avatar ? user.avatar : Logo}
                   alt=""
                   style={{
                     height: 114,
@@ -178,7 +182,7 @@ const AdminProfile = () => {
                   color: "#333333",
                 }}
               >
-                Admin Asad
+                {user ? user?.fullName : "Anonymous"}
               </p>
             </div>
           </div>
