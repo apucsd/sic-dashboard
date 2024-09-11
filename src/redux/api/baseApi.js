@@ -15,7 +15,6 @@ const baseQuery = fetchBaseQuery({
     }
   },
 });
-
 const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
@@ -33,7 +32,7 @@ const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
     console.log("Sending refresh token");
 
     const res = await fetch(
-      "http://192.168.10.18:5001/api/v1/auth/refresh-token",
+      `${import.meta.env.VITE_BACKEND_API_URL}/auth/refresh-token`,
       {
         method: "POST",
         credentials: "include",
@@ -41,13 +40,26 @@ const baseQueryWithRefreshToken = async (args, api, extraOptions) => {
     );
 
     const data = await res.json();
+    console.log(data, "Result after sending refresh token");
 
     if (data?.data?.accessToken) {
       localStorage.setItem("accessToken", data.data.accessToken);
-      result = await baseQuery(args, api, extraOptions);
+
+      // Retry original request with the new token
+      const newHeaders = {
+        ...args.headers,
+        Authorization: `Bearer ${data.data.accessToken}`,
+      };
+
+      // Retry the request with updated headers
+      result = await baseQuery(
+        { ...args, headers: newHeaders },
+        api,
+        extraOptions
+      );
     } else {
       localStorage.removeItem("accessToken");
-      window.location.replace("/login");
+      // window.location.replace("/login");
     }
   }
   // console.log(result);

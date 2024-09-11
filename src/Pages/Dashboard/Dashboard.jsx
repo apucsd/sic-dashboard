@@ -15,6 +15,7 @@ import { RiNotification2Line } from "react-icons/ri";
 import donorIcon from "../../assets/donor.png";
 import Swal from "sweetalert2";
 import { useGetUserProfileQuery } from "../../redux/api/userApi";
+import { getUserRole } from "../../utils/utils";
 const { Header, Sider, Content } = Layout;
 
 const Dashboard = () => {
@@ -48,6 +49,7 @@ const Dashboard = () => {
     });
   };
 
+  const role = getUserRole();
   const linkItems = [
     {
       title: "Dashboard",
@@ -69,7 +71,6 @@ const Dashboard = () => {
       path: "/donors-record",
       icon: <img src={donorIcon} />,
     },
-
     {
       title: "Books Category",
       path: "/books-category-list",
@@ -80,35 +81,17 @@ const Dashboard = () => {
       path: "/books-list",
       icon: <VscBook size={24} />,
     },
-
     {
       title: "Settings",
       path: "/setting",
       icon: <IoSettingsOutline size={24} />,
       option: true,
       optionsItems: [
-        {
-          title: "FAQ",
-          path: "/faq",
-        },
-        {
-          title: "Privacy Policy",
-          path: "/privacy",
-        },
-
-        {
-          title: "Terms & Condition",
-          path: "/terms",
-        },
-        {
-          title: "SIC guidelines",
-          path: "/sic",
-        },
-
-        {
-          title: "About Us",
-          path: "/about",
-        },
+        { title: "FAQ", path: "/faq" },
+        { title: "Privacy Policy", path: "/privacy" },
+        { title: "Terms & Condition", path: "/terms" },
+        { title: "SIC guidelines", path: "/sic" },
+        { title: "About Us", path: "/about" },
       ],
     },
     {
@@ -121,17 +104,16 @@ const Dashboard = () => {
       path: "/feedback",
       icon: <VscFeedback size={24} />,
     },
-
-    {
-      title: "Add admin",
-      path: "/make-admin",
-      icon: <FiUserPlus size={24} />,
-    },
-    // {
-    //   title: "Log out",
-    //   path: "/login",
-    //   icon: <FiLogOut size={24} />,
-    // },
+    // Conditionally render "Add admin" based on user role
+    ...(role === "SUPER-ADMIN"
+      ? [
+          {
+            title: "Add admin",
+            path: "/make-admin",
+            icon: <FiUserPlus size={24} />,
+          },
+        ]
+      : []), // If the user is not Super Admin, nothing is added here
   ];
 
   return (

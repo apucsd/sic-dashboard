@@ -8,7 +8,6 @@ import {
   useUpdateAdminStatusMutation,
 } from "../../redux/api/adminApi";
 import { toast } from "sonner";
-import { userTypeItems } from "../../const/constant";
 
 const SalonCategoryList = () => {
   const [addAdmin] = useAddAdminMutation();
@@ -156,7 +155,7 @@ const SalonCategoryList = () => {
   // };
 
   const handleAddAdmin = async (values) => {
-    console.log(values);
+    // console.log(values);
 
     try {
       const res = await addAdmin(values).unwrap();
